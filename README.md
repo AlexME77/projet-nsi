@@ -32,18 +32,18 @@ Sur GitHub :
 - 4 - Merge
 
 # A faire au début de chaque séance :
-git checkout main
-git pull
-git checkout ta_branche
+- git checkout main
+- git pull
+- git checkout ta_branche
 
 # Sauvegarder son travail :
-git add .
-git commit -m "Ajout gestion des boutons"
+- git add .
+- git commit -m "Ajout gestion des boutons"
 
 # A faire à la fin de chaque séance :
-git add .
-git commit -m "Message clair"
-git push origin ta_branche
+- git add .
+- git commit -m "Message clair"
+- git push origin ta_branche
 
 # Fusionner :
 Sur GitHub :
