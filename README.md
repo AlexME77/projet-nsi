@@ -1,6 +1,7 @@
 # projet-nsi
 
 Projet NSI Term04 de MAI--EMERY Alexandre et Mickaël et ONNO Aymeric
+Thème n°1 : Réalisation d'une interface homme-machine d’un robot mobile accessible en wifi réalisant un parcours configurable à partir du serveur Web avec géo-localisation par GPS
 
 # Répartition des tâches
 
