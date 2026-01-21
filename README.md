@@ -18,7 +18,7 @@ Thème n°1 : Réalisation d'une interface homme-machine d’un robot mobile acc
 - git checkout ta_branche
 
 # Sauvegarder son travail :
-- git add .
+- git add -A
 - git commit -m "Ajout gestion des boutons"
 
 # A faire à la fin de chaque séance :
@@ -32,24 +32,3 @@ Sur GitHub :
 - 2 - New Pull Request
 - 3 - Vérifier
 - 4 - Merge
-
-# A faire au début de chaque séance :
-- git checkout main
-- git pull
-- git checkout ta_branche
-
-# Sauvegarder son travail :
-- git add .
-- git commit -m "Ajout gestion des boutons"
-
-# A faire à la fin de chaque séance :
-- git add .
-- git commit -m "Message clair"
-- git push origin ta_branche
-
-# Fusionner :
-Sur GitHub :
-- Onglet Pull Requests
-- New Pull Request
-- Vérifier
-- Merge
