@@ -22,7 +22,7 @@ Thème n°1 : Réalisation d'une interface homme-machine d’un robot mobile acc
 - git commit -m "Ajout gestion des boutons"
 
 # A faire à la fin de chaque séance :
-- git add .
+- git add -A
 - git commit -m "Message clair"
 - git push origin ta_branche
 
