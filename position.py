@@ -1,11 +1,13 @@
 import serial
 from gps import (extraire_position_GPRMC, calculer_orientation_voulue, calculer_correction)
+from database import lire_destination
+
 #gps = serial.Serial("COM4", 4800, timeout=1)
 #while True:
 #    trame = gps.readline().decode("ascii", errors="ignore").strip()
 #    if trame.startswith("$GPRMC"):
-#        position = extraire_position_GPRMC(trame)
-#        if position is not None:
+#        position_gps_actuelle = extraire_position_GPRMC(trame)
+#        if position_gps_actuelle is not None:
 #            print("Position actuelle :", position)
             
 position = (0.0, 0.0)
@@ -32,3 +34,6 @@ position = (48.88294, 2.61215) # position GPS réelle
 destination = (48.88350, 2.61300) # destination fictive
 angle_voulu = calculer_orientation_voulue(position, destination)
 print("Orientation à suivre :", angle_voulu)
+
+destination = lire_destination("parcours_1", 1)
+print("Destination :", destination)
