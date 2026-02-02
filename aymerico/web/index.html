@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajout d’un point GPS</title>
+</head>
+<body>
+
+    <h1>Définir un point du parcours</h1>
+
+    <form action="http://localhost:5000/ajouter_point" method="get">
+
+        <label>Nom du parcours :</label><br>
+        <input type="text" name="nom_parcours" required><br><br>
+
+        <label>Ordre du point :</label><br>
+        <input type="number" name="ordre" required><br><br>
+
+        <label>Latitude :</label><br>
+        <input type="number" step="any" name="latitude" required><br><br>
+
+        <label>Longitude :</label><br>
+        <input type="number" step="any" name="longitude" required><br><br>
+
+        <input type="submit" value="Envoyer le point">
+
+    </form>
+
+</body>
+</html>
