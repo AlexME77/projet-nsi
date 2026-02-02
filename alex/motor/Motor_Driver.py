@@ -83,7 +83,7 @@ if __name__=="__main__":
         motor.OUT_2.stop()
         motor.OUT_3.stop()
         motor.OUT_4.stop()
-        motor.GPIO.cleanup()
+        GPIO.cleanup()
         exit(0)
 
     # Prepare handlers for process exit
