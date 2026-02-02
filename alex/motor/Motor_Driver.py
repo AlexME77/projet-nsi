@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 import time
 import signal   
 
-from PiSoftPwm import *
+from motor.PiSoftPwm import *
 
 #print 'Go_1...'
 #frequency = 1.0 / self.sc_1.GetValue()

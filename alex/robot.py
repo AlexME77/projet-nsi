@@ -1,26 +1,27 @@
 from motor.Motor_Driver import Motor
+import time
+
 class robot:
 
     def __init__(self):
         self.motor = Motor()
-        self.motor.settings(0.01, 60)
 
-    def avant(self, vitesse):
+    def avant(self):
         self.motor.Go_1()
         self.motor.Go_2()
 
-    def arriere(self, vitesse):
+    def arriere(self):
         self.motor.Back_1()
         self.motor.Back_2()
 
     def arret(self):
         self.motor.Stop()
 
-    def droite(self, vitesse):
+    def droite(self):
         self.motor.Stop()
         self.motor.Go_1()
 
-    def gauche(self, vitesse):
+    def gauche(self):
         self.motor.Stop()
         self.motor.Go_2()
 
@@ -28,6 +29,12 @@ class robot:
         self.motor.Go_1()
         self.motor.Back_2()
 
-    def rotation_trigo(self, angle):
+    def rotation_trigo(self):
         self.motor.Back_1()
         self.motor.Go_2()
+
+if __name__ == '__main__':
+    test = robot()
+    test.avant()
+    time.sleep(2)
+    test.arret()
