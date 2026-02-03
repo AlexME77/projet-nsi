@@ -1,10 +1,12 @@
 from motor.Motor_Driver import Motor
 import time
+from capteurs.ultrason import CapteurUltrason
 
 class Robot:
 
     def __init__(self):
         self.motor = Motor()
+        self.capteur_ultrason = CapteurUltrason()
 
     def avant(self):
         self.motor.Go_1()
@@ -35,6 +37,9 @@ class Robot:
         
     def set_settings(self, vitesse):
         self.motor.Setting(0.01, vitesse)
+
+    def distance_obstacle(self):
+        return self.capteur_ultrason.mesurer_distance()
 
 if __name__ == '__main__':
     test = Robot()
