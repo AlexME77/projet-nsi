@@ -32,9 +32,16 @@ class robot:
     def rotation_trigo(self):
         self.motor.Back_1()
         self.motor.Go_2()
+        
+    def set_settings(self, vitesse):
+        self.motor.Setting(0.01, vitesse)
 
 if __name__ == '__main__':
     test = robot()
+    test.set_settings(10)
     test.avant()
+    time.sleep(2)
+    test.set_settings(50)
+    test.arriere()
     time.sleep(2)
     test.arret()
