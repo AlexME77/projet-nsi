@@ -18,6 +18,16 @@ def extraire_position_GPRMC(trame):
     longitude = convertir_ddmm(champs[5], champs[6])
     return latitude, longitude
 
+def extraire_position_GPGGA(trame):
+    champs = trame.split(",")
+    # Vérifier que le signal est valide
+    if champs[6] == "0":
+        return None
+    latitude = convertir_ddmm(champs[2], champs[3])
+    longitude = convertir_ddmm(champs[4], champs[5])
+    return latitude, longitude
+
+
 
 def calculer_orientation_voulue(position, destination):
     """

@@ -1,14 +1,30 @@
 import serial
-from gps import (extraire_position_GPRMC, calculer_orientation_voulue, calculer_correction)
+import serial.tools.list_ports
+from gps import (extraire_position_GPGGA, calculer_orientation_voulue, calculer_correction)
 from database import lire_destination
 
-#gps = serial.Serial("COM4", 4800, timeout=1)
-#while True:
-#    trame = gps.readline().decode("ascii", errors="ignore").strip()
-#    if trame.startswith("$GPRMC"):
-#        position_gps_actuelle = extraire_position_GPRMC(trame)
-#        if position_gps_actuelle is not None:
-#            print("Position actuelle :", position)
+ports = list(serial.tools.list_ports.comports())
+if len(ports) == 0:
+    print("Aucun port série détecté")
+    exit()
+port = ports[0].device
+print("Port GPS détecté :", port)
+gps = serial.Serial(port, 4800, timeout=1)
+ordre = 1
+seuil = 0.00005
+while True:
+    trame = gps.readline().decode("ascii", errors="ignore").strip()
+    if trame.startswith("$GPGGA"):
+        position = extraire_position_GPGGA(trame)
+        if position is None:
+            print("Position GPS invalide")
+        else:
+            destination = lire_destination("parcours_1", ordre)
+            if destination is None:
+                print("Aucune destination pour cet ordre")
+            else:
+                print("Parcours terminé")
+                break
             
 position = (0.0, 0.0)
 destination = (1.0, 0.0)
