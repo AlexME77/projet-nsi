@@ -1,7 +1,7 @@
 from motor.Motor_Driver import Motor
 import time
 
-class robot:
+class Robot:
 
     def __init__(self):
         self.motor = Motor()
@@ -37,7 +37,7 @@ class robot:
         self.motor.Setting(0.01, vitesse)
 
 if __name__ == '__main__':
-    test = robot()
+    test = Robot()
     test.set_settings(10)
     test.avant()
     time.sleep(2)
