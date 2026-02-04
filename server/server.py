@@ -3,7 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-DB_PATH = "/home/pi/Desktop/PROJET/database/parcours.db"
+DB_PATH = "../database/parcours.db"
 
 def connecter_db():
     return sqlite3.connect(DB_PATH)
