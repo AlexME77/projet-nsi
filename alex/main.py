@@ -10,7 +10,7 @@ def main():
     try:
         while True:
             distance = robot.distance_obstacle()
-            if distance < 20:
+            if distance < 10:
                 robot.arret()
                 time.sleep(1)
                 robot.arriere()
@@ -31,8 +31,4 @@ def main():
         print("GPIO nettoyé et arrêt du robot")
 
 if __name__ == "__main__":
-#    main()
-    while True:
-        test = Robot()
-        print(test.distance_obstacle())
-        time.sleep(1)
+    main()
