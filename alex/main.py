@@ -3,20 +3,28 @@ import time
 import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
 
+def eviter_obstacle(robot):
+    robot.arret()
+    time.sleep(1)
+    robot.arriere()
+    time.sleep(1)
+    robot.droite()
+    time.sleep(1)
+    robot.avant()
+    time.sleep(1)
+
 def main():
     robot = Robot()
-    robot.set_settings(40)
+    distance_seuil=10
+    vitesse=40
+    robot.set_settings(vitesse)
+    
 
     try:
         while True:
             distance = robot.distance_obstacle()
-            if distance < 10:
-                robot.arret()
-                time.sleep(1)
-                robot.arriere()
-                time.sleep(1)
-                robot.droite()
-                time.sleep(1)
+            if distance < distance_seuil:
+                eviter_obstacle(robot)
             else:
                 robot.avant()
                 time.sleep(1)
