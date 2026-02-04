@@ -1,3 +1,36 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajout d’un point GPS</title>
+</head>
+<body>
+
+    <h1>Ajouter un point</h1>
+<p><a href="index.html">← Retour au menu</a></p>
+
+    <form action="http://localhost:5000/ajouter_point" method="get">   <!-- Remplacer localhost par l'ip du rasperry -->
+
+        <label>Nom du parcours :</label><br>
+        <input type="text" name="nom_parcours" required><br><br>
+
+        <label>Ordre du point :</label><br>
+        <input type="number" name="ordre" required><br><br>
+
+        <label>Latitude :</label><br>
+        <input type="number" step="any" name="latitude" required><br><br>
+
+        <label>Longitude :</label><br>
+        <input type="number" step="any" name="longitude" required><br><br>
+
+        <input type="submit" value="Envoyer le point">
+
+    </form>
+
+</body>
+</html>
+=======
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,3 +50,4 @@
 
 </body>
 </html>
+>>>>>>> bfab31567121c809a1d8409056fe0ef203db606c
