@@ -1,1 +1,0 @@
-<?xml version=\"1.0\"?><kms><position period=\"5\" name=\"position\"/></kms>
