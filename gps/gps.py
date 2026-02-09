@@ -20,6 +20,19 @@ class GPS:
         latitude = GPS.convertir_ddmm(champs[2], champs[3])
         longitude = GPS.convertir_ddmm(champs[4], champs[5])
         return latitude, longitude
+    
+    def lire_position_GPS(gps):
+        """
+        Lit les trames jusqu'à obtenir une position GPS valide (GPGGA)
+        """
+        while True:
+            trame = gps.readline().decode("ascii", errors="ignore").strip()
+            if trame.startswith("$GPGGA"):
+                print(trame)
+                position = GPS.extraire_position_GPGGA(trame)
+                if position is None:
+                    print("Position GPS invalide")
+                return position
 
     def distance_2pGPS(coord1, coord2):
         la1 = radians(coord1[0])
