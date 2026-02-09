@@ -16,21 +16,20 @@ def eviter_obstacle(robot):
 
 def navigation(robot, get_angle_cible, get_distance_cible, get_angle_actuel):
     while True:
-        
-        distance_obstacle = robot.distance_obstacle()
-        if distance_obstacle < distance_min:
+
+        if robot.distance_obstacle() < distance_min:
             eviter_obstacle(robot)
             continue
 
-        distance_cible = get_distance_cible()
-        if distance_cible < distance_arrivee:
-            robot.stop()
+        if get_distance_cible() < distance_arrivee:
+            robot.arret()
             print("Arrivé à destination")
             break
 
         angle_cible = get_angle_cible()
         angle_actuel = get_angle_actuel()
         angle_diff = (angle_cible - angle_actuel)
+        
         if angle_diff > 180:
             angle_diff -= 360
         elif angle_diff < -180:
@@ -38,10 +37,10 @@ def navigation(robot, get_angle_cible, get_distance_cible, get_angle_actuel):
 
         if abs(angle_diff) < seuil_angle:
             robot.avant()
-        elif abs(angle_diff) > 0:
-            robot.droite(min(angle_diff, 30))
+        elif angle_diff > 0:
+            robot.droite()
             time.sleep(0.2)
-        elif abs(angle_diff) < 0:
+        else:
             robot.gauche()
             time.sleep(0.2)
         time.sleep(0.1)
