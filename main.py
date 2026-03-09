@@ -2,7 +2,7 @@ from robot import Robot
 from controle.navigation_robot import *
 import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
-from gps.gps import GPS
+#from gps.gps import GPS
 
 
 angle_actuel = 0
