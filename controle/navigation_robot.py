@@ -1,5 +1,6 @@
 import time
 from gps.gps import GPS
+from gps.database import lire_destination
 
 def eviter_obstacle(robot):
     robot.arret()
@@ -14,20 +15,23 @@ def eviter_obstacle(robot):
     robot.avant()
     time.sleep(1)
 
-def navigation(robot, get_angle_cible, get_distance_cible, get_angle_actuel, distance_arrivee=1, distance_obstacle=20):
+def navigation(robot, seuil_obstacle=20, seuil_arrivee=0.5):
     gps = GPS()
+    gps.port()
     gps.calibration()
 
+    
     while True: 
 
-        if distance < distance_arrivee:
+        distance_arrivee = gps.distance_2pGPS(gps.lire_position_GPS(), lire_destination("test", ordre=1))
+        if distance_arrivee < seuil_arrivee:
             robot.arret()
-            print("Arrivé à destination !")
+            print("Point atteint")
             break
 
-        if robot.distance_obstacle() < distance_obstacle:
+        if robot.distance_obstacle() < seuil_obstacle:
             eviter_obstacle(robot)
-            orienter_vers_cible(robot, get_angle_cible, get_angle_actuel, seuil_angle=10)
+            gps.orientation(gps.lire_position_GPS(), lire_destination("test", ordre=1))
         
         else:
             robot.avant()
