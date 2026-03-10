@@ -1,6 +1,6 @@
 import sqlite3
 
-def lire_destination(nom_parcours, ordre):
+def lire_destination(parcours, ordre):
     """
     Récupère les coordonnées GPS (latitude, longitude)
     d'un point du parcours depuis la base de données
@@ -9,7 +9,7 @@ def lire_destination(nom_parcours, ordre):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT latitude, longitude FROM points WHERE nom_parcours=? AND ordre=?",
-        (nom_parcours, ordre)
+        (parcours, ordre)
     )
     resultat = cursor.fetchone()
     conn.close()
