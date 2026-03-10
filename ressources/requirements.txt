@@ -1,6 +1,10 @@
+future==1.0.0
 iniconfig==2.3.0
+iso8601==2.1.0
 packaging==26.0
 pluggy==1.6.0
 Pygments==2.19.2
+pyserial==3.5
 pytest==9.0.2
+PyYAML==6.0.3
 RPi.GPIO==0.7.1
