@@ -9,19 +9,6 @@ from gps.database import lire_destination
 import time
 
 
-
-def angle_cible():
-    return 90
-
-def distance_cible():
-    global distance_cible
-    distance_cible -= 0.1
-    return distance_cible
-
-def angle_actuel():
-    global angle_actuel
-    return angle_actuel
-
 def main():
     ordre = 1
     seuil = 2.0
