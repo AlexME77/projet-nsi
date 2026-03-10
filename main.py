@@ -2,9 +2,9 @@ from robot import Robot
 from controle.navigation_robot import *
 import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
-from gps.gps import GPS
 import serial
 import serial.tools.list_ports
+from gps.gps import GPS
 from gps.database import lire_destination
 import time
 
