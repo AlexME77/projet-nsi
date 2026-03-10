@@ -2,11 +2,16 @@ from robot import Robot
 from controle.navigation_robot import *
 import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
-#from gps.gps import GPS
-
-angle_actuel = 0
+from gps.gps import GPS
+import serial
+import serial.tools.list_ports
+from gps.database import lire_destination
+import time
 
 def main():
+    ordre = 1
+    seuil = 2.0
+    
     robot = Robot()
     robot.set_settings(50)
 
