@@ -44,7 +44,8 @@ if __name__ == '__main__':
         trame = gps_serial.readline().decode("ascii", errors="ignore").strip()
         if not trame.startswith("$GPGGA"):
             continue
-        print(trame)
+        #print(trame)
+        print(GPS.extraire_position_GPGGA(trame))
         
         position = GPS.extraire_position_GPGGA(trame)
         if position is None:
