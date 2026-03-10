@@ -25,6 +25,7 @@ def main():
         robot.arret()
         GPIO.cleanup()
         print("GPIO nettoyé et arrêt du robot")
+        
 
 if __name__ == "__main__":
-    main()  
+    main()
