@@ -10,13 +10,15 @@ import time
 
 def main():
     ordre = 1
-    seuil = 2.0
+    seuil_arrivee = 2.0
+    seuil_obstacle = 20
+    parcours = "test"
     
     robot = Robot()
     robot.set_settings(50)
 
     try:
-        navigation(robot, get_angle_cible, get_distance_cible, get_angle_actuel)
+        navigation(robot, parcours, seuil_arrivee, seuil_obstacle)
 
     except KeyboardInterrupt:
         print("Arrêt du programme par l'utilisateur")

@@ -100,3 +100,6 @@ class GPS:
         else:
             orientation_depart = None
             print("Calibration ignorée (mode PC)")
+        
+    def get_distance_cible(self, nom_parcours, ordre):
+        return self.distance_2pGPS(self.lire_position_GPS, self.lire_destination(nom_parcours, ordre=ordre))
