@@ -16,7 +16,7 @@ def main():
     robot.set_settings(50)
 
     try:
-        navigation(robot, angle_cible, distance_cible, angle_actuel)
+        navigation(robot, get_angle_cible, get_distance_cible, get_angle_actuel)
 
     except KeyboardInterrupt:
         print("Arrêt du programme par l'utilisateur")
