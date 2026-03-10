@@ -8,7 +8,6 @@ from gps.gps import GPS
 from gps.database import lire_destination
 import time
 
-
 def main():
     ordre = 1
     seuil = 2.0
