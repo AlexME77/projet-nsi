@@ -6,36 +6,9 @@ import time
 
 if __name__ == '__main__':
     
-    ports = list(serial.tools.list_ports.comports())
-    if not ports:
-        print("Aucun port série détecté")
-        exit()
-    port = ports[0].device
-    print("Port GPS détecté :", port)
-    gps_serial = serial.Serial(port, 4800, timeout=1)
-    
-    
-    print("Calibration orientation...")
-    try:
-        from robot import *
-        robot_disponible = True
-        robot = robot.Robot()
-    except ModuleNotFoundError:
-        print ("RPi.GPIO non disponible (mode PC)")
-        robot_disponible = False
-        orientation_depart = None
-        
-    if robot_disponible :
-        position1 = GPS.lire_position_GPS(gps_serial)
-        robot.avant()
-        time.sleep(0.5)
-        robot.arret()
-        position2 = GPS.lire_position_GPS(gps_serial)
-        orientation_depart = GPS.orientation(position1, position2)
-        print("Orientation de départ :", orientation_depart)
-    else:
-        orientation_depart = None
-        print("Calibration ignorée (mode PC)")
+    gps = GPS()
+    gps.port()
+    gps.calibration()
     
     ordre = 1
     seuil = 2.0
@@ -45,9 +18,9 @@ if __name__ == '__main__':
         if not trame.startswith("$GPGGA"):
             continue
         #print(trame)
-        print(GPS.extraire_position_GPGGA(trame))
+        print(gps.extraire_position_GPGGA(trame))
         
-        position = GPS.extraire_position_GPGGA(trame)
+        position = gps.extraire_position_GPGGA(trame)
         if position is None:
             print("Position GPS invalide")
             continue
@@ -59,10 +32,10 @@ if __name__ == '__main__':
             print("Parcours terminé")
             break
         
-        orientation_voulue = GPS.orientation(position, destination)
+        orientation_voulue = gps.orientation(position, destination)
         #print("Orientation cible : ", round(orientation_voulue, 2), "°")
         
-        distance_reste = GPS.distance_2pGPS(position, destination)
+        distance_reste = gps.distance_2pGPS(position, destination)
         #print("Distance restante :", round(distance_reste, 2), "m")
                 
         # Vérifier si le point est atteint
