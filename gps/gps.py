@@ -6,7 +6,7 @@ import time
 class GPS:
 
     def __init__(self):
-        
+        exit
     
     def convertir_ddmm(self, valeur, orientation):
         valeur = float(valeur)
