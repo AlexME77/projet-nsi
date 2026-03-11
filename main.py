@@ -8,16 +8,13 @@ from gps.gps import GPS
 from gps.database import lire_destination
 import time
 
-def main():
+def main(nom_parcours):
 
     robot = Robot()
     robot.set_settings(50)
-    nom_parcours="test"
 
     #recupération du parcours depuis la base de données
-    points_parcours = []
-    for i in range(len(lire_destination(nom_parcours))): # à remplacer par la vraie valeur du nombre de points dans le parcours
-        points_parcours.append(coord_destination(nom_parcours, ordre=i))
+    points_parcours = coord_destination(nom_parcours)
 
     try:
         navigation(robot, points_parcours)
@@ -27,9 +24,9 @@ def main():
     
     finally:
         robot.arret()
+        print("Arrêt du robot")
         GPIO.cleanup()
-        print("GPIO nettoyé et arrêt du robot")
-        
+        print("GPIO nettoyé")
 
 if __name__ == "__main__":
-    main()
+    main("test")

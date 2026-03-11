@@ -5,7 +5,7 @@ def coord_destination(nom_parcours):
     Récupère les coordonnées GPS (latitude, longitude)
     d'un point du parcours depuis la base de données
     """
-    conn = sqlite3.connect("parcours.db")
+    conn = sqlite3.connect("gps/parcours.db")
     cursor = conn.cursor()
     cursor.execute(
         "SELECT latitude, longitude, ordre FROM points WHERE nom_parcours=? ORDER BY ordre",
