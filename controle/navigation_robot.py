@@ -1,6 +1,6 @@
 import time
 from gps.gps import GPS
-from gps.database import lire_destination
+from gps.database import coord_destination
 
 def eviter_obstacle(robot, direction="droite"):
     robot.arret()
@@ -22,7 +22,7 @@ def eviter_obstacle(robot, direction="droite"):
 def navigation(robot, parcours, seuil_obstacle=20, seuil_arrivee=2.0):
     gps = GPS()
     gps.port()
-    gps.calibration()
+    gps.angle_depart()
 
     i=0
     fin = False
@@ -43,11 +43,11 @@ def navigation(robot, parcours, seuil_obstacle=20, seuil_arrivee=2.0):
 
         if robot.distance_obstacle() < seuil_obstacle:
             
-            orientation = gps.orientation(gps.lire_position_GPS(), lire_destination(parcours, ordre=i))
+            orientation = gps.get_orientation(gps.get_position_robot(), coord_destination(parcours, ordre=i))
 # Pour tout ce qui est orientation pour éviter de faire des tours pour rien il faudrait faire une fonction qui calcule le bon anglais si et renvoie droite ou gauche et la valeur de l'angle mais seulement de -180 à 180 pour éviter de faire des tours de 360° ou plus
             eviter_obstacle(robot, direction="droite" if orientation < 180 else "gauche")
 
-            orientation = gps.orientation(gps.lire_position_GPS(), lire_destination(parcours, ordre=i))
+            orientation = gps.get_orientation(gps.get_position_robot(), coord_destination(parcours, ordre=i))
 
             if orientation < 180:
                 robot.rotation_trigo()

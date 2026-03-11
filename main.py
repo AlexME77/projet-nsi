@@ -19,7 +19,7 @@ def main():
 
     gps = GPS()
     gps.port()
-    gps.calibration()
+    gps.angle_depart()
 
     try:
         navigation(robot, parcours, seuil_arrivee, seuil_obstacle)

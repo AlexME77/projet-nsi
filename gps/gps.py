@@ -92,11 +92,11 @@ class GPS:
             orientation_depart = None
         
         if robot_disponible :
-            position1 = self.lire_position_GPS(gps_serial)
+            position1 = self.get_position_robot(gps_serial)
             robot.avant()
             time.sleep(0.5)
             robot.arret()
-            position2 = self.lire_position_GPS(gps_serial)
+            position2 = self.get_position_robot(gps_serial)
             orientation_depart = self.orientation(position1, position2)
             print("Orientation de départ :", orientation_depart)
         else:
@@ -105,4 +105,4 @@ class GPS:
 # Il faut un return ici je pense d'une orientation ou sinon il faut une suite d'instructions pour mettre le robot vers le nord ou quelque chose comme ça.
         
     def get_distance_cible(self, nom_parcours, ordre):
-        return self.distance_2pGPS(self.lire_position_GPS, self.lire_destination(nom_parcours, ordre=ordre))
+        return self.distance_2pGPS(self.get_position_robot, self.coord_destination(nom_parcours, ordre=ordre))
