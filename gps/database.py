@@ -1,6 +1,6 @@
 import sqlite3
 
-def lire_destination(parcours, ordre):
+def coord_destination(nom_parcours, ordre):
     """
     Récupère les coordonnées GPS (latitude, longitude)
     d'un point du parcours depuis la base de données
