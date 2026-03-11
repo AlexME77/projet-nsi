@@ -19,11 +19,13 @@ def eviter_obstacle(robot, direction="droite"):
     time.sleep(1)
 
 #parcours c'est quoi ? une liste de points GPS ? Déjà en lattitude longitude ?
-def navigation(robot, parcours, seuil_obstacle=20, seuil_arrivee=2.0):
+def navigation(robot, parcours):
+    
     gps = GPS()
-    gps.port()
-    gps.angle_depart()
+    orientation_depart = gps.angle_depart()
 
+    seuil_arrivee = 2.0
+    seuil_obstacle = 20
     i=0
     fin = False
 
@@ -44,7 +46,7 @@ def navigation(robot, parcours, seuil_obstacle=20, seuil_arrivee=2.0):
         if robot.distance_obstacle() < seuil_obstacle:
             
             orientation = gps.get_orientation(gps.get_position_robot(), coord_destination(parcours, ordre=i))
-# Pour tout ce qui est orientation pour éviter de faire des tours pour rien il faudrait faire une fonction qui calcule le bon anglais si et renvoie droite ou gauche et la valeur de l'angle mais seulement de -180 à 180 pour éviter de faire des tours de 360° ou plus
+
             eviter_obstacle(robot, direction="droite" if orientation < 180 else "gauche")
 
             orientation = gps.get_orientation(gps.get_position_robot(), coord_destination(parcours, ordre=i))

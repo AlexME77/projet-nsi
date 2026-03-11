@@ -5,7 +5,8 @@ import time
 
 class GPS:
 
-    #il faut pas faire un init ?
+    def __init__(self):
+        
     
     def convertir_ddmm(self, valeur, orientation):
         valeur = float(valeur)
@@ -99,10 +100,24 @@ class GPS:
             position2 = self.get_position_robot(gps_serial)
             orientation_depart = self.orientation(position1, position2)
             print("Orientation de départ :", orientation_depart)
+            return orientation_depart
         else:
             orientation_depart = None
             print("Calibration ignorée (mode PC)")
-# Il faut un return ici je pense d'une orientation ou sinon il faut une suite d'instructions pour mettre le robot vers le nord ou quelque chose comme ça.
+            return orientation_depart
         
     def get_distance_cible(self, nom_parcours, ordre):
-        return self.distance_2pGPS(self.get_position_robot, self.coord_destination(nom_parcours, ordre=ordre))
+        return self.distance_2pGPS(self.get_position_robot(), self.coord_destination(nom_parcours, ordre=ordre))
+
+    def correction_orientation(self, parcours, point):
+        angle_robot = self.angle_depart()
+        angle_destination = self.get_orientation(self.get_position_robot(), self.coord_destination(parcours, point))
+        correction = (angle_destination - angle_robot)
+
+        if correction > 180:
+            correction -= 360
+
+        if correction < -180:
+            correction += 360
+
+        return correction
