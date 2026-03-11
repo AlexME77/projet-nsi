@@ -9,20 +9,18 @@ from gps.database import lire_destination
 import time
 
 def main():
-    
-    seuil_arrivee = 2.0
-    seuil_obstacle = 20
-    parcours = "test"
 
     robot = Robot()
     robot.set_settings(50)
+    nom_parcours="test"
 
-    gps = GPS()
-    gps.port()
-    gps.angle_depart()
+    #recupération du parcours depuis la base de données
+    points_parcours = []
+    for i in range(len(lire_destination(nom_parcours))): # à remplacer par la vraie valeur du nombre de points dans le parcours
+        points_parcours.append(coord_destination(nom_parcours, ordre=i))
 
     try:
-        navigation(robot, parcours, seuil_arrivee, seuil_obstacle)
+        navigation(robot, points_parcours)
 
     except KeyboardInterrupt:
         print("Arrêt du programme par l'utilisateur")
