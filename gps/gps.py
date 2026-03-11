@@ -23,7 +23,7 @@ class GPS:
         longitude = self.convertir_ddmm(champs[4], champs[5])
         return latitude, longitude
     
-    def lire_position_GPS(self, gps):
+    def get_position_robot(self, gps):
         """
         Lit les trames jusqu'à obtenir une position GPS valide (GPGGA)
         """
@@ -48,7 +48,7 @@ class GPS:
         )
         return dis  # en mètres
 
-    def orientation(self, coord1, coord2):
+    def get_orientation(self, coord1, coord2):
         la1 = math.radians(coord1[0])
         la2 = math.radians(coord2[0])
         lon1 = math.radians(coord1[1])
@@ -75,7 +75,7 @@ class GPS:
         gps_serial = serial.Serial(port, 4800, timeout=1)
         return gps_serial
     
-    def calibration(self):
+    def angle_depart(self):
         print("Calibration orientation...")
         gps_serial = self.port()
         try:
