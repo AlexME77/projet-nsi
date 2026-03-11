@@ -9,7 +9,7 @@ def coord_destination(nom_parcours, ordre):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT latitude, longitude FROM points WHERE nom_parcours=? AND ordre=?",
-        (nom_parcours, ordre)
+        (parcours, ordre)
     )
     resultat = cursor.fetchone()
     conn.close()

@@ -4,6 +4,8 @@ import serial.tools.list_ports
 import time
 
 class GPS:
+
+    #il faut pas faire un init ?
     
     def convertir_ddmm(self, valeur, orientation):
         valeur = float(valeur)
@@ -100,3 +102,7 @@ class GPS:
         else:
             orientation_depart = None
             print("Calibration ignorée (mode PC)")
+# Il faut un return ici je pense d'une orientation ou sinon il faut une suite d'instructions pour mettre le robot vers le nord ou quelque chose comme ça.
+        
+    def get_distance_cible(self, nom_parcours, ordre):
+        return self.distance_2pGPS(self.lire_position_GPS, self.lire_destination(nom_parcours, ordre=ordre))

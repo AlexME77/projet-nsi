@@ -14,7 +14,7 @@ if __name__ == '__main__':
     seuil = 2.0
     
     while True:
-        trame = gps_serial.readline().decode("ascii", errors="ignore").strip()
+        trame = gps_serial.readline().decode("ascii", errors="ignore").strip() #gps_serial n'existe pas c'est bizarre il faut peut être l'appeler ou le créer ?
         if not trame.startswith("$GPGGA"):
             continue
         #print(trame)
