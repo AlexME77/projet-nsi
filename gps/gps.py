@@ -2,11 +2,9 @@ import math
 import serial
 import serial.tools.list_ports
 import time
+from database import coord_destination
 
 class GPS:
-
-    def __init__(self):
-        exit
     
     def convertir_ddmm(self, valeur, orientation):
         valeur = float(valeur)
@@ -26,10 +24,11 @@ class GPS:
         longitude = self.convertir_ddmm(champs[4], champs[5])
         return latitude, longitude
     
-    def get_position_robot(self, gps):
+    def get_position_robot(self):
         """
         Lit les trames jusqu'à obtenir une position GPS valide (GPGGA)
         """
+        gps = GPS()
         while True:
             trame = gps.readline().decode("ascii", errors="ignore").strip()
             if trame.startswith("$GPGGA"):
@@ -93,12 +92,12 @@ class GPS:
             orientation_depart = None
         
         if robot_disponible :
-            position1 = self.get_position_robot(gps_serial)
+            position1 = self.get_position_robot()
             robot.avant()
             time.sleep(0.5)
             robot.arret()
-            position2 = self.get_position_robot(gps_serial)
-            orientation_depart = self.orientation(position1, position2)
+            position2 = self.get_position_robot()
+            orientation_depart = self.get_orientation(position1, position2)
             print("Orientation de départ :", orientation_depart)
             return orientation_depart
         else:
@@ -107,11 +106,13 @@ class GPS:
             return orientation_depart
         
     def get_distance_cible(self, nom_parcours, ordre):
-        return self.distance_2pGPS(self.get_position_robot(), self.coord_destination(nom_parcours, ordre=ordre))
+        points_parcours = coord_destination(nom_parcours)
+        return self.distance_2pGPS(self.get_position_robot(), points_parcours[ordre])
 
-    def correction_orientation(self, parcours, point):
+    def correction_orientation(self, nom_parcours, point):
+        points_parcours = coord_destination(nom_parcours)
         angle_robot = self.angle_depart()
-        angle_destination = self.get_orientation(self.get_position_robot(), self.coord_destination(parcours, point))
+        angle_destination = self.get_orientation(self.get_position_robot(), points_parcours[point])
         correction = (angle_destination - angle_robot)
 
         if correction > 180:
