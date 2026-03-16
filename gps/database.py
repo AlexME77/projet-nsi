@@ -15,7 +15,7 @@ def coord_destination(nom_parcours):
     conn.close()
 
     if len(resultat) == 0: 
-        return None
+        raise ValueError(f"Aucun parcours '{nom_parcours}'")
     
     print(resultat)
     return resultat  # (latitude, longitude)
