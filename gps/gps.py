@@ -2,10 +2,13 @@ import math
 import serial
 import serial.tools.list_ports
 import time
-from database import coord_destination
+from gps.database import coord_destination
 
 class GPS:
-    
+
+    def __init__(self):
+        self.gps_serial = self.port()
+
     def convertir_ddmm(self, valeur, orientation):
         valeur = float(valeur)
         degres = int(valeur // 100)
@@ -28,9 +31,9 @@ class GPS:
         """
         Lit les trames jusqu'à obtenir une position GPS valide (GPGGA)
         """
-        gps = GPS()
+
         while True:
-            trame = gps.readline().decode("ascii", errors="ignore").strip()
+            trame = self.gps_serial.readline().decode("ascii", errors="ignore").strip()
             if trame.startswith("$GPGGA"):
                 print(trame)
                 position = self.extraire_position_GPGGA(trame)
@@ -79,7 +82,7 @@ class GPS:
     
     def angle_depart(self):
         print("Calibration orientation...")
-        gps_serial = self.port()
+        self.gps_serial = self.port()
         try:
             import sys
             sys.path.append("..")
@@ -105,14 +108,12 @@ class GPS:
             print("Calibration ignorée (mode PC)")
             return orientation_depart
         
-    def get_distance_cible(self, nom_parcours, ordre):
-        points_parcours = coord_destination(nom_parcours)
-        return self.distance_2pGPS(self.get_position_robot(), points_parcours[ordre])
+    def get_distance_cible(self, points, ordre):
+        return self.distance_2pGPS(self.get_position_robot(), points[ordre])
 
-    def correction_orientation(self, nom_parcours, point):
-        points_parcours = coord_destination(nom_parcours)
+    def correction_orientation(self, points, ordre):
         angle_robot = self.angle_depart()
-        angle_destination = self.get_orientation(self.get_position_robot(), points_parcours[point])
+        angle_destination = self.get_orientation(self.get_position_robot(), points[ordre])
         correction = (angle_destination - angle_robot)
 
         if correction > 180:
