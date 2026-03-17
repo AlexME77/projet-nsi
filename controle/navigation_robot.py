@@ -1,6 +1,11 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import time
 from gps.gps import GPS
 from gps.database import coord_destination
+from robot import Robot
 
 def eviter_obstacle(robot, direction="droite"):
     robot.arret()
@@ -44,7 +49,10 @@ def navigation(robot, points):
                 return
 
         orientation = gps.correction_orientation(points, i)
-        if orientation < 0:
+
+        if orientation > -5 and orientation < 5:
+            continue
+        elif orientation < 0:
                 robot.rotation_trigo()
         else:
             robot.rotation_horaire()    
@@ -57,8 +65,11 @@ def navigation(robot, points):
 
             eviter_obstacle(robot, direction="droite" if orientation > 0 else "gauche")
 
-            orientation = gps.correction_orientation(points, i)
-
         else:
             robot.avant()
-        time.sleep(0.1)
+        time.sleep(1)
+
+if __name__ == '__main__':
+    robot = Robot()
+    navigation(robot, [(12.0, 24.0)])
+

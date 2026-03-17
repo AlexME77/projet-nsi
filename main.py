@@ -6,7 +6,7 @@ GPIO.setwarnings(False)
 def main(nom_parcours):
 
     robot = Robot()
-    robot.set_settings(50)
+    robot.set_settings(100)
 
     try:
         points_parcours = coord_destination(nom_parcours)
