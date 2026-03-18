@@ -22,7 +22,7 @@ def coord_destination(nom_parcours):
     if len(resultat) == 0: 
         raise ValueError(f"Aucun parcours '{nom_parcours}'")
     
-    print("Les points du parcours sont : " + resultat)
+    print(f"Les points du parcours sont : {resultat}")
     return resultat  # (latitude, longitude)
 
 if __name__ == '__main__':

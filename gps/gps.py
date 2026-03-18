@@ -45,7 +45,7 @@ class GPS:
                     return position
 
     def distance_2pGPS(self, coord1, coord2):
-        print("Calcule 2pGPS entre " + coord1 + "et " + coord2)
+        print(f"Calcule 2pGPS entre {coord1} et {coord2}")
         la1 = math.radians(coord1[0])
         la2 = math.radians(coord2[0])
         lon1 = math.radians(coord1[1])
@@ -88,7 +88,6 @@ class GPS:
     def angle_depart(self):
         "Calibration du robot pour avoir son orientation de départ par rapport au Nord"
         print("Calibration orientation...")
-        self.gps_serial = self.port()
         try:
             import sys
             sys.path.append("..")
