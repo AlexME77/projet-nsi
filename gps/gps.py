@@ -10,6 +10,7 @@ class GPS:
         self.gps_serial = self.port()
 
     def convertir_ddmm(self, valeur, orientation):
+        print("Conversion de la coordonnée")
         valeur = float(valeur)
         degres = int(valeur // 100)
         minutes = valeur - degres * 100
@@ -19,6 +20,7 @@ class GPS:
         return coord
 
     def extraire_position_GPGGA(self, trame):
+        print("Extraction de la position")
         champs = trame.split(",")
         # Signal invalide
         if champs[6] == "0":
@@ -31,8 +33,8 @@ class GPS:
         """
         Lit les trames jusqu'à obtenir une position GPS valide (GPGGA)
         """
-
         while True:
+            print("Lecture de la trame GPS...")
             trame = self.gps_serial.readline().decode("ascii", errors="ignore").strip()
             if trame.startswith("$GPGGA"):
                 print(trame)
@@ -43,6 +45,7 @@ class GPS:
                     return position
 
     def distance_2pGPS(self, coord1, coord2):
+        print("Calcule 2pGPS entre " + coord1 + "et " + coord2)
         la1 = math.radians(coord1[0])
         la2 = math.radians(coord2[0])
         lon1 = math.radians(coord1[1])
@@ -54,6 +57,7 @@ class GPS:
         return dis  # en mètres
 
     def get_orientation(self, coord1, coord2):
+        print("Calcule de l'orientation de l'arrivée par rapport au Nord")
         la1 = math.radians(coord1[0])
         la2 = math.radians(coord2[0])
         lon1 = math.radians(coord1[1])
@@ -71,6 +75,7 @@ class GPS:
         return direction
     
     def port(self):
+        print("Regarde si tu es sur le Raspberry et le port usb utilisé")
         ports = list(serial.tools.list_ports.comports())
         if not ports:
             print("Aucun port série détecté")
@@ -81,6 +86,7 @@ class GPS:
         return gps_serial
     
     def angle_depart(self):
+        "Calibration du robot pour avoir son orientation de départ par rapport au Nord"
         print("Calibration orientation...")
         self.gps_serial = self.port()
         try:
@@ -109,9 +115,11 @@ class GPS:
             return orientation_depart
         
     def get_distance_cible(self, points, ordre):
+        print("Calcul de la distance du robot par rapport à la cible")
         return self.distance_2pGPS(self.get_position_robot(), points[ordre])
 
     def correction_orientation(self, points, ordre):
+        "Calcule la correction d'orientation nécessaire pour se diriger vers la cible"
         angle_robot = self.angle_depart()
         angle_destination = self.get_orientation(self.get_position_robot(), points[ordre])
         correction = (angle_destination - angle_robot)
