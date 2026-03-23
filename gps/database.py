@@ -7,7 +7,7 @@ def coord_destination(nom_parcours):
     """
 
     print("Connexion à la base de données")
-    conn = sqlite3.connect("gps/parcours.db")
+    conn = sqlite3.connect("/var/www/html/robot/database/parcours.db")
     cursor = conn.cursor()
     print("Récupération des coordonnées GPS")
     cursor.execute(
