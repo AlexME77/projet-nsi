@@ -1,6 +1,7 @@
 from robot import Robot
 from controle.navigation_robot import *
 import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 def main(nom_parcours):

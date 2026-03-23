@@ -43,7 +43,7 @@ def navigation(robot, points):
         position = gps.get_position_robot()
 
         "Récupération de la distance à la cible"
-        distance_arrivee = gps.distance2pGPS(position, points[i])
+        distance_arrivee = gps.distance_2pGPS(position, points[i])
 
         print("Vérification de la distance à la cible")
         if distance_arrivee < seuil_arrivee:
