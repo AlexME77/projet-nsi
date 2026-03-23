@@ -29,8 +29,11 @@ def distance():
     StopTime = time.time()
  
     # Enregistrement du temps de départ des ultrasons #
+    timeout = time.time() + 0.02  # 20 ms max
     while GPIO.input(GPIO_ECHO) == 0:
-        StartTime = time.time()
+        start = time.time()
+        if start > timeout:
+            return None  # erreur
  
     # Enregistrement du temps d'arrivés des ultrasons #
     while GPIO.input(GPIO_ECHO) == 1:
