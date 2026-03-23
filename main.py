@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-def main(nom_parcours):
+def main():
 
     print("Initialisation du robot...")
     robot = Robot()
@@ -12,7 +12,7 @@ def main(nom_parcours):
 
     try:
         print("Récupération des coordonnées du parcours...")
-        points_parcours = coord_destination(nom_parcours)
+        points_parcours = coord_destination()
         print("Démarrage de la navigation...")
         navigation(robot, points_parcours)
 
@@ -26,4 +26,4 @@ def main(nom_parcours):
         print("GPIO nettoyé")
 
 if __name__ == "__main__":
-    main("test")
+    main()
