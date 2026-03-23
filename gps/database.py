@@ -1,12 +1,27 @@
 import sqlite3
 
-def coord_destination(nom_parcours):
+def coord_destination():
     """
     Récupère les coordonnées GPS (latitude, longitude)
     d'un point du parcours depuis la base de données
     """
+    print("Connexion à la base de données pour connaitre le nom du parcours")
+    conn = sqlite3.connect("/var/www/html/robot/database/parcours.db")
+    cursor = conn.cursor()
+    print("Récupération du nom du parcours")
+    cursor.execute(
+    "SELECT nom_parcours FROM commande WHERE action=?",
+    ("start",)
+    )
+    result = cursor.fetchone()
+    conn.close()
+    if result is None:
+        raise ValueError("Aucune commande 'start' trouvée")
+    nom_parcours = result[0]
+    print("Déconnexion de la base de données, récupération du nom du parcours terminée : ", nom_parcours)
 
-    print("Connexion à la base de données")
+
+    print("Connexion à la base de données pour récupérer les coordonnées GPS du parcours")
     conn = sqlite3.connect("/var/www/html/robot/database/parcours.db")
     cursor = conn.cursor()
     print("Récupération des coordonnées GPS")
@@ -16,7 +31,7 @@ def coord_destination(nom_parcours):
     )
     resultat = cursor.fetchall()
     conn.close()
-    print("Déconnexion de la base de données, récupération terminée")
+    print("Déconnexion de la base de données, récupération des coordonnées GPS terminée")
 
     print("Vérification si la base de données est vide")
     if len(resultat) == 0: 
@@ -26,4 +41,4 @@ def coord_destination(nom_parcours):
     return resultat  # (latitude, longitude)
 
 if __name__ == '__main__':
-    coord_destination('test')
+    coord_destination()
