@@ -27,7 +27,6 @@ def eviter_obstacle(robot, direction="droite"):
 
     print("Fin de l'évitement d'obstacle")
 
-#parcours c'est quoi ? une liste de points GPS ? Déjà en lattitude longitude ?
 def navigation(robot, points):
     
     gps = GPS()
@@ -62,6 +61,7 @@ def navigation(robot, points):
         print("Calcul de l'orientation")
         orientation_voulue = gps.get_orientation(position, points[i])
         correction = orientation_voulue - orientation_robot
+        facteur_rotation = 0.01  # Ajuster ce facteur pour trouver le bon temps de rotation en fonction de l'orientation
         if correction > 180:
             correction -= 360
         if correction < -180:
@@ -76,8 +76,7 @@ def navigation(robot, points):
                 robot.rotation_trigo()
         else:
             robot.rotation_horaire()    
-        time.sleep(abs(correction/30))  # Ajuster le temps de rotation en fonction de l'orientation (trouver la bonne valeur et faire attention à la vitesse garder toujours la même)
-# On peut même faire une fonction ou une relation qui calcule le temps de rotation en fonction de l'orientation et de la vitesse du robot
+        time.sleep(abs(correction) * facteur_rotation)
 
         orientation_robot += correction
         orientation_robot = orientation_robot % 360

@@ -29,20 +29,19 @@ class GPS:
         longitude = self.convertir_ddmm(champs[4], champs[5])
         return latitude, longitude
     
-    def get_position_robot(self):
+    def get_position_robot(self, timeout = 5):
         """
         Lit les trames jusqu'à obtenir une position GPS valide (GPGGA)
         """
-        while True:
-            print("Lecture de la trame GPS...")
+        start_time = time.time()
+
+        while time.time() - start_time < timeout:
             trame = self.gps_serial.readline().decode("ascii", errors="ignore").strip()
             if trame.startswith("$GPGGA"):
-                print(trame)
                 position = self.extraire_position_GPGGA(trame)
-                if position is None:
-                    print("Position GPS invalide")
-                else:
+                if position:
                     return position
+        return None  # échec
 
     def distance_2pGPS(self, coord1, coord2):
         print(f"Calcule 2pGPS entre {coord1} et {coord2}")
@@ -117,11 +116,10 @@ class GPS:
         print("Calcul de la distance du robot par rapport à la cible")
         return self.distance_2pGPS(self.get_position_robot(), points[ordre])
 
-    def correction_orientation(self, points, ordre):
+    def correction_orientation(self, points, ordre, orientation_robot):
         "Calcule la correction d'orientation nécessaire pour se diriger vers la cible"
-        angle_robot = self.angle_depart()
         angle_destination = self.get_orientation(self.get_position_robot(), points[ordre])
-        correction = (angle_destination - angle_robot)
+        correction = (angle_destination - orientation_robot)
 
         if correction > 180:
             correction -= 360

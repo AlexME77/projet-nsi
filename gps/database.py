@@ -5,40 +5,39 @@ def coord_destination():
     Récupère les coordonnées GPS (latitude, longitude)
     d'un point du parcours depuis la base de données
     """
-    print("Connexion à la base de données pour connaitre le nom du parcours")
+    print("Connexion à la base de données")
     conn = sqlite3.connect("/var/www/html/robot/database/parcours.db")
     cursor = conn.cursor()
+
     print("Récupération du nom du parcours")
     cursor.execute(
     "SELECT nom_parcours FROM commande WHERE action=?",
     ("start",)
     )
-    result = cursor.fetchone()
-    conn.close()
-    if result is None:
+    parcours = cursor.fetchone()
+   
+    if parcours is None:
         raise ValueError("Aucune commande 'start' trouvée")
-    nom_parcours = result[0]
-    print("Déconnexion de la base de données, récupération du nom du parcours terminée : ", nom_parcours)
+    
+    nom_parcours = parcours[0]
+    print("Récupération du nom du parcours terminée : ", nom_parcours)
 
 
-    print("Connexion à la base de données pour récupérer les coordonnées GPS du parcours")
-    conn = sqlite3.connect("/var/www/html/robot/database/parcours.db")
-    cursor = conn.cursor()
-    print("Récupération des coordonnées GPS")
+    print("Récupération des coordonnées GPS du parcours")
     cursor.execute(
         "SELECT latitude, longitude FROM points WHERE nom_parcours=? ORDER BY ordre",
         (nom_parcours,)
     )
-    resultat = cursor.fetchall()
+    points = cursor.fetchall()
     conn.close()
     print("Déconnexion de la base de données, récupération des coordonnées GPS terminée")
 
     print("Vérification si la base de données est vide")
-    if len(resultat) == 0: 
-        raise ValueError(f"Aucun parcours '{nom_parcours}'")
+    if len(points) == 0: 
+        raise ValueError(f"Aucun points pour parcours '{nom_parcours}'")
     
-    print(f"Les points du parcours sont : {resultat}")
-    return resultat  # (latitude, longitude)
+    print(f"Les points du parcours sont : {points}")
+    return points
 
 if __name__ == '__main__':
     coord_destination()

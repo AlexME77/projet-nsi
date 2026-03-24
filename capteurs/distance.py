@@ -4,10 +4,7 @@ import RPi.GPIO as GPIO
 import time
  
 # Module GPIO: BOARD ou BCM (numérotation comme la sérigraphie de la carte ou comme le chip) #
-GPIO.setwarnings(False)
-
-GPIO.setmode(GPIO.BCM) 
- 
+GPIO.setwarnings(False) 
  
 # Définition des broches GPIO #
 GPIO_TRIGGER = 2

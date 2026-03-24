@@ -2,7 +2,6 @@
 # The modifier is ukonline2000
 
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 import threading
 import time
