@@ -19,11 +19,17 @@ class CapteurUltrason:
         start = time.time()
         stop = time.time()
 
+        timeout = time.time() + 0.02  # 20 ms max
         while GPIO.input(self.echo) == 0:
             start = time.time()
+            if start > timeout:
+                return None  # erreur
 
+        timeout = time.time() + 0.02  # 20 ms max
         while GPIO.input(self.echo) == 1:
-            stop = time.time()
+            start = time.time()
+            if start > timeout:
+                return None  # erreur
 
         duree = stop - start
         distance = (duree * 34300) / 2
