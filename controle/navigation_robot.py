@@ -44,6 +44,10 @@ def navigation(robot, points):
     while not fin:
         
         position = gps.get_position_robot()
+        if position is None:
+            print("Erreur GPS")
+            robot.arret()
+            break
 
         "Récupération de la distance à la cible"
         distance_arrivee = gps.distance_2pGPS(position, points[i])
@@ -79,18 +83,17 @@ def navigation(robot, points):
         elif correction < 0:
                 robot.rotation_trigo()
         else:
-            robot.rotation_horaire()    
+            robot.rotation_horaire()
         time.sleep(abs(correction) * facteur_rotation)
 
-        orientation_robot += correction
-        orientation_robot = orientation_robot % 360
+        orientation_robot = gps.get_orientation(position, points[i])
 
         print("Vérification de la présence d'obstacles")
-        if robot.distance_obstacle() < seuil_obstacle:
-
+        distance_obstacle = robot.distance_obstacle()
+        if distance_obstacle is not None and distance_obstacle < seuil_obstacle:
             print("Évitement de l'obstacle")
             eviter_obstacle(robot, direction="droite" if correction > 0 else "gauche")
-
+            continue
         else:
             print("Avance vers la cible ")
             robot.avant()
