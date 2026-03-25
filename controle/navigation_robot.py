@@ -37,10 +37,6 @@ def navigation(robot, points):
     fin = False
     orientation_robot = gps.angle_depart(robot)
 
-    if orientation_robot is None:
-        print("Impossible de calibrer le GPS")
-        return
-
     while not fin:
         
         position = gps.get_position_robot()
