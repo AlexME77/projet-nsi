@@ -1,0 +1,184 @@
+body {
+    font-family: "Comic Sans MS", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    min-height: 100vh;
+}
+
+.container {
+    width: 700px;
+    margin: 60px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    border: 4px solid #333;
+    box-shadow: 8px 8px 0px #333;
+}
+
+
+}
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+a {
+    color: #ff6600;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+label {
+    font-weight: bold;
+    color: #444;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    border: 3px solid #333;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #ffcc00;
+    color: #333;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 3px solid #333;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #333;
+    transition: 0.1s;
+}
+
+input[type="submit"]:hover {
+    background-color: #ffd633;
+}
+
+input[type="submit"]:active {
+    box-shadow: 2px 2px 0px #333;
+    transform: translate(2px, 2px);
+}
+
+
+
+.note {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* ===== BOUTONS LANCER / STOP ===== */
+
+
+.robot-buttons
+input[type="submit"].start {
+    background-color: #4cd137;
+    color: 333;
+}
+
+.robot-buttons
+input[type="submit"].start:hover {
+    background-color: #44bd32;
+}
+
+.robot-buttons
+input[type="submit"].danger {
+    background-color: #e55039;
+    color: 333;
+}
+
+
+.robot-buttons
+input[type="submit"].danger:hover {
+    background-color: #ff6b6b;
+}
+
+
+
+
+
+.robot-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.robot-buttons form {
+    width: 48%;
+    margin: 0;
+}
+
+.robot-buttons input[type="submit"] {
+    width: 100%;
+    font-size: 17px;
+    height: 60px;
+}
+
+/* ===== BOUTONS DU MENU ===== */
+
+.menu-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.menu-btn {
+    display: block;
+    padding: 18px;
+    border-radius: 18px;
+    border: 3px solid #333;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+    box-shadow: 6px 6px 0px #333;
+    transition: 0.15s;
+}
+
+.menu-btn:hover {
+    transform: translateY(-3px);
+}
+
+.menu-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px 0px #333;
+}
+
+.menu-buttons a:nth-child(1) {
+    background-color: #ffcc00;
+}
+
+.menu-buttons a:nth-child(2) {
+    background-color: #66ccff;
+}
+
+.menu-buttons a:nth-child(3) {
+    background-color: #ff6b6b;
+}
+
+/* Le 3e bouton seul au centre */
+.menu-buttons a:last-child:nth-child(odd) {
+    grid-column: 1 / 3;
+    width: 50%;
+    justify-self: center;
+}

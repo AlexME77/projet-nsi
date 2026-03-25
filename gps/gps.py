@@ -37,8 +37,8 @@ class GPS:
 
         while time.time() - start_time < timeout:
             trame = self.gps_serial.readline().decode("ascii", errors="ignore").strip()
-            print("Trame brut : ", trame)
             if trame.startswith("$GPGGA"):
+                print("Trame brut : ", trame)
                 position = self.extraire_position_GPGGA(trame)
                 if position:
                     return position
