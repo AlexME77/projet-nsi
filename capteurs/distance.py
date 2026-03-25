@@ -22,13 +22,12 @@ class CapteurUltrason:
         time.sleep(0.00001)
         GPIO.output(self.trig, False)
     
-        StartTime = time.time()
         StopTime = time.time()
     
         # Enregistrement du temps de départ des ultrasons #
         timeout = time.time() + 0.02  # 20 ms max
         while GPIO.input(self.echo) == 0:
-            start = time.time()
+            StartTime = time.time()
             if start > timeout:
                 return None  # erreur
     
@@ -48,7 +47,7 @@ class CapteurUltrason:
         return distance
  
 if __name__ == '__main__':
-    capteur = CapteurUltrason
+    capteur = CapteurUltrason()
     try:
         while True:
             dist = capteur.mesurer_distance()

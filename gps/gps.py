@@ -64,7 +64,7 @@ class GPS:
         lon2 = math.radians(coord2[1])
 
         longDelta = lon2 - lon1
-        y = math.sin(longDelta) * math.cos(la1)
+        y = math.sin(longDelta) * math.cos(la2)
         x = math.cos(la1) * math.sin(la2) - math.sin(la1) * math.cos(la2) * math.cos(longDelta)
 
         angle = math.atan2(y, x) * 360 / (2 * math.pi)
