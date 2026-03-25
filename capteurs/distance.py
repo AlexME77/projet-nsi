@@ -1,6 +1,7 @@
 
 # Import des librairies GPIO et time (temps et conversion) #
 import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
 import time
  
 # Module GPIO: BOARD ou BCM (numérotation comme la sérigraphie de la carte ou comme le chip) #

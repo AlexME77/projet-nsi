@@ -35,7 +35,11 @@ def navigation(robot, points):
     seuil_obstacle = 20
     i=0
     fin = False
-    orientation_robot = gps.angle_depart()
+    orientation_robot = gps.angle_depart(robot)
+
+    if orientation_robot is None:
+        print("Impossible de calibrer le GPS")
+        return
 
     while not fin:
         

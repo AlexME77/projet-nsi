@@ -22,6 +22,7 @@ def main():
     finally:
         robot.arret()
         print("Arrêt du robot")
+        robot.cleanup()
         GPIO.cleanup()
         print("GPIO nettoyé")
 

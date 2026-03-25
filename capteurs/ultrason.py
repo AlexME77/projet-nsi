@@ -34,3 +34,9 @@ class CapteurUltrason:
         duree = stop - start
         distance = (duree * 34300) / 2
         return distance
+
+if  __name__ == "__main__":
+    capteur = CapteurUltrason()
+    while True:
+        print(capteur.mesurer_distance())
+        time.sleep(1)

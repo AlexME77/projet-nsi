@@ -37,6 +37,7 @@ class GPS:
 
         while time.time() - start_time < timeout:
             trame = self.gps_serial.readline().decode("ascii", errors="ignore").strip()
+            print("Trame brut : ", trame)
             if trame.startswith("$GPGGA"):
                 position = self.extraire_position_GPGGA(trame)
                 if position:
@@ -84,33 +85,27 @@ class GPS:
         gps_serial = serial.Serial(port, 4800, timeout=1)
         return gps_serial
     
-    def angle_depart(self):
+    def angle_depart(self, robot):
         "Calibration du robot pour avoir son orientation de départ par rapport au Nord"
         print("Calibration orientation...")
-        try:
-            import sys
-            sys.path.append("..")
-            from robot import Robot
-            robot_disponible = True
-            robot = Robot()
-        except ModuleNotFoundError:
-            print ("RPi.GPIO non disponible (mode PC)")
-            robot_disponible = False
-            orientation_depart = None
-        
-        if robot_disponible :
-            position1 = self.get_position_robot()
-            robot.avant()
-            time.sleep(0.5)
-            robot.arret()
-            position2 = self.get_position_robot()
-            orientation_depart = self.get_orientation(position1, position2)
-            print("Orientation de départ :", orientation_depart)
-            return orientation_depart
-        else:
-            orientation_depart = None
-            print("Calibration ignorée (mode PC)")
-            return orientation_depart
+        position1 = self.get_position_robot()
+        if position1 is None:
+            print("Erreur GPS (position1)")
+            return None
+	
+        robot.avant()
+        time.sleep(0.5)
+        robot.arret()
+
+        position2 = self.get_position_robot()
+        if position2 is None:
+            print("Erreur GPS (position2)")
+            return None
+
+        orientation_depart = self.get_orientation(position1, position2)
+        print("Orientation de départ :", orientation_depart)
+
+        return orientation_depart
         
     def get_distance_cible(self, points, ordre):
         print("Calcul de la distance du robot par rapport à la cible")
