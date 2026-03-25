@@ -41,6 +41,13 @@ class Robot:
     def distance_obstacle(self):
         return self.capteur_ultrason.mesurer_distance()
 
+    def cleanup(self):
+        print("Arrêt des PWM")
+        self.motor.OUT_1.stop()
+        self.motor.OUT_2.stop()
+        self.motor.OUT_3.stop()
+        self.motor.OUT_4.stop()
+
 if __name__ == '__main__':
     robot = Robot()
     while True:
