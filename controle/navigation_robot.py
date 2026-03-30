@@ -44,8 +44,6 @@ def navigation(robot, points):
             print("Erreur GPS")
             robot.arret()
             break
-        
-        orientation_robot = gps.get_orientation(position, points[i])
 
         print("Récupération de la distance à la cible")
         distance_arrivee = gps.distance_2pGPS(position, points[i])

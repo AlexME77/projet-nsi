@@ -108,11 +108,17 @@ class GPS:
         return orientation_depart
         
     def get_distance_cible(self, points, ordre):
+        position = self.get_position_robot()
+        if position is None:
+            return None
         print("Calcul de la distance du robot par rapport à la cible")
         return self.distance_2pGPS(self.get_position_robot(), points[ordre])
 
     def correction_orientation(self, points, ordre, orientation_robot):
-        "Calcule la correction d'orientation nécessaire pour se diriger vers la cible"
+        position = self.get_position_robot()
+        if position is None:
+            return None
+        print("Calcule la correction d'orientation nécessaire pour se diriger vers la cible")
         angle_destination = self.get_orientation(self.get_position_robot(), points[ordre])
         correction = (angle_destination - orientation_robot)
 
