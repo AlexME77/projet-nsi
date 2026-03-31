@@ -65,7 +65,7 @@ def navigation(robot, points):
         print("Calcul de l'orientation")
         orientation_voulue = gps.get_orientation(position, points[i])
         correction = orientation_voulue - orientation_robot
-        facteur_rotation = 0,01  # Ajuster ce facteur pour trouver le bon temps de rotation en fonction de l'orientation
+        facteur_rotation = 1.55/360
         if correction > 180:
             correction -= 360
         if correction < -180:
@@ -99,4 +99,3 @@ def navigation(robot, points):
 if __name__ == '__main__':
     robot = Robot()
     navigation(robot, [(12.0, 24.0)])
-
