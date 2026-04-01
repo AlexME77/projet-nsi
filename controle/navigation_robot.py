@@ -6,10 +6,15 @@ import time
 from gps.gps import GPS
 from gps.database import coord_destination
 from robot import Robot
+from gps.database import stop_demande
 
 def eviter_obstacle(robot, direction="droite"):
+    if stop_demande:
+        print("Arrêt du robot demandé depuis le site")
+        robot.arret()
+        break
     print("Début de l'évitement d'obstacle")
-
+    
     robot.arret()
     time.sleep(0.5)
 
@@ -38,7 +43,10 @@ def navigation(robot, points):
     orientation_robot = gps.angle_depart(robot)
 
     while not fin:
-        
+        if stop_demande:
+            print("Arrêt du robot demandé depuis le site")
+            robot.arret()
+            break
         position = gps.get_position_robot()
         if position is None:
             print("Erreur GPS")
