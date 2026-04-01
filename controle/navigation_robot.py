@@ -8,101 +8,166 @@ from gps.database import coord_destination
 from robot import Robot
 from gps.database import stop_robot_bdd, stop_demande
 
-def eviter_obstacle(robot, direction="droite"):
-    print("Début de l'évitement d'obstacle")
+class NavigationRobot:
+
+    def __init__(self, robot, gps):
+        self.robot = robot
+        self.gps = gps
+        self.position_robot = self.gps.get_position_robot()
+        self.orientation_robot = self.gps.angle_depart(self.robot)
+
+        if self.position_robot is None or self.orientation_robot is None:
+            print("Calibration GPS impossible, arrêt.")
+            self.robot.arret()
+            print("Arrêt du robot")
+            exit()
     
-    robot.arret()
-    time.sleep(0.5)
-
-    robot.arriere()
-    time.sleep(0.7)
-
-    if direction == "droite":
-        robot.droite()
-    else:
-        robot.gauche()
-    time.sleep(0.7)
-
-    robot.avant()
-    time.sleep(1)
-
-    print("Fin de l'évitement d'obstacle")
-
-def navigation(robot, points):
-    gps = GPS()
-
-    seuil_arrivee = 2.0
-    seuil_obstacle = 20
-    i=0
-    fin = False
-    orientation_robot = gps.angle_depart(robot)
-
-    while not fin:
-        if stop_demande():
-            print("Arrêt du robot demandé depuis le site")
-            robot.arret()
-            return
-        position = gps.get_position_robot()
-        
-        if position is None:
+    def est_arrive(self, destination, seuil_arrivee=2.0):
+        print("Vérification de l'arrivée à la cible")
+        if self.position_robot is None:
             print("Erreur GPS")
-            robot.arret()
+            return False
+        distance = self.gps.distance_2pGPS(self.position_robot, destination)
+        return distance < seuil_arrivee
+    
+    def set_position_robot(self):
+        self.position_robot = self.gps.get_position_robot()
+            
+        if self.position_robot is None:
+            print("Erreur GPS")
+            self.robot.arret()
             print("Arrêt du robot")
             return
-
+    
+    def get_distance_arrivee(self, destination):
         print("Récupération de la distance à la cible")
-        distance_arrivee = gps.distance_2pGPS(position, points[i])
-
-        print("Vérification de la distance à la cible")
-        if distance_arrivee < seuil_arrivee:
-            robot.arret()
-            print("Point atteint")
-            print("Vérification de l'arrivée à la cible")
-            if i < len(points)-1:
-                print("Passage au point suivant")
-                i += 1
-                continue
-            else:
-                print("Parcours terminé")
-                fin = True
-                stop_robot_bdd()
-
-
-        print("Calcul de l'orientation")
-        orientation_voulue = gps.get_orientation(position, points[i])
-        correction = orientation_voulue - orientation_robot
-        facteur_rotation = 1.55/360
+        if self.position_robot is None:
+            print("Erreur GPS")
+            self.robot.arret()
+            print("Arrêt du robot")
+            return None
+        return self.gps.distance_2pGPS(self.position_robot, destination)
+    
+    def get_correction_orientation(self, destination):
+        print("Calcul de la correction d'orientation")
+        if self.position_robot is None:
+            print("Erreur GPS")
+            self.robot.arret()
+            print("Arrêt du robot")
+            return None
+        angle_cible = self.gps.get_orientation(self.position_robot, destination)
+        if self.orientation_robot is None:
+            print("Calibration GPS impossible, arrêt.")
+            self.robot.arret()
+            print("Arrêt du robot")
+            return None
+        correction = (angle_cible - self.orientation_robot + 360) % 360
         if correction > 180:
             correction -= 360
-        if correction < -180:
-            correction += 360
-
-        print("Correction de l'orientation")
-        if -5 < correction < 5:
-            robot.avant()
-            time.sleep(1)
-            continue
-        elif correction < 0:
-                robot.rotation_trigo()
+        return correction
+    
+    def correction_orientation(self, destination, seuil_correction=10, facteur_rotation=1.55/360):
+        correction = self.get_correction_orientation(destination)
+        if correction is None or abs(correction) < seuil_correction:
+            return
+        print("Correction d'orientation nécessaire :", correction)
+        if correction > 0:
+            print("Tourne à droite")
+            self.robot.rotation_horaire()
         else:
-            robot.rotation_horaire()
+            print("Tourne à gauche")
+            self.robot.rotation_trigo()
         time.sleep(abs(correction) * facteur_rotation)
-        robot.arret()
+        self.robot.arret()
+        print("Arrêt du robot")
+        return correction
+    
+    def set_orietation_robot(self, correction):
+        if correction is None:
+            return
+        self.orientation_robot = (self.orientation_robot + correction) % 360
 
-        orientation_robot = (orientation_robot + correction) % 360
-        
+    def obstacle_detecte(self, seuil_obstacle=20):
         print("Vérification de la présence d'obstacles")
-        distance_obstacle = robot.distance_obstacle()
+        distance_obstacle = self.robot.distance_obstacle()
         if distance_obstacle is not None and distance_obstacle < seuil_obstacle:
-            print("Évitement de l'obstacle")
-            eviter_obstacle(robot, direction="droite" if correction > 0 else "gauche")
-            continue
+            print("Obstacle détecté")
+            return True
+        return False
+
+    def eviter_obstacle(self, direction="droite"):
+        print("Début de l'évitement d'obstacle")
+        
+        self.robot.arret()
+        time.sleep(0.5)
+
+        self.robot.arriere()
+        time.sleep(0.7)
+
+        if direction == "droite":
+            self.robot.droite()
         else:
-            print("Avance vers la cible ")
-            robot.avant()
+            self.robot.gauche()
+        time.sleep(0.7)
+
+        self.robot.avant()
         time.sleep(1)
+
+        print("Fin de l'évitement d'obstacle")
+        
+    def navigation(self, points):
+
+        i=0
+        fin = False
+
+        while not fin:
+            
+            if stop_demande():
+                print("Arrêt du robot demandé depuis le site")
+                self.robot.arret()
+                print("Arrêt du robot")
+                return
+
+            self.set_position_robot()
+            distance_arrivee = self.get_distance_arrivee(points[i])
+
+            if distance_arrivee is None:
+                print("Erreur lors du calcul de la distance à la cible, arrêt.")
+                self.robot.arret()
+                print("Arrêt du robot")
+                return
+
+            # ARRIVEE
+            if self.est_arrive(points[i]):
+                self.robot.arret()
+                print("Arrêt du robot")
+                print("Point atteint")
+                if i < len(points)-1:
+                    print("Passage au point suivant")
+                    i += 1
+                    continue
+                else:
+                    print("Parcours terminé")
+                    fin = True
+                    stop_robot_bdd()
+                    return
+
+            # ORIENTATION
+            correction = self.correction_orientation(points[i])
+            self.set_orietation_robot(correction)
+
+            # OBSTACLE
+            if self.obstacle_detecte():
+                self.eviter_obstacle(direction="droite" if correction > 0 else "gauche")
+                continue
+            else:
+                print("Avance vers la cible ")
+                self.robot.avant()
+            time.sleep(1)
 
 if __name__ == '__main__':
     robot = Robot()
+    gps = GPS()
+    navigation = NavigationRobot(robot, gps)
     navigation(robot, [(12.0, 24.0)])
 

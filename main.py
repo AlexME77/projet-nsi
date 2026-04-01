@@ -7,7 +7,8 @@ from gps.database import get_commande
 
 def main():
     
-    action = get_commande()
+    commande = get_commande()
+    action = commande[0] if commande else None
     if action != "start":
         print("Aucun parcours à lancer")
         return

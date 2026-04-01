@@ -92,7 +92,7 @@ class GPS:
         if position1 is None:
             print("Erreur GPS (position1)")
             return None
-	
+
         robot.avant()
         time.sleep(0.5)
         robot.arret()
