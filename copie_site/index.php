@@ -28,14 +28,15 @@ include("db.php");
             ?>
         </select>
 
-        <div class="robot-buttons">
+    <div class="robot-buttons">
+        <form action="lancer.php" method="post">
+            <select name="nom_parcours" required>...</select>
             <input type="submit" value="Lancer le robot" class="start">
-    </form>
-
-    <form action="stop.php" method="post">
+        </form>
+            <form action="stop.php" method="post">
             <input type="submit" value="Arrêter le robot" class="danger">
-    </form>
-        </div>
+        </form>
+    </div>
 
     <div class="menu-buttons">
         <a href="ajouter.php" class="menu-btn">Ajouter un point</a>
