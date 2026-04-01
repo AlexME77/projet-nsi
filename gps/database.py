@@ -39,24 +39,5 @@ def coord_destination():
     print(f"Les points du parcours sont : {points}")
     return points
 
-DB_PATH = "/var/www/html/robot/database/parcours.db"
-
-def get_commande():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT action FROM commande WHERE id = 1;")
-    commande = cur.fetchone()
-    conn.close()
-
-    if commande:
-        return commande
-    return None
-
-
-def stop_demande():
-    action, _ = get_commande()
-    return action == "stop"
-
-
 if __name__ == '__main__':
     coord_destination()

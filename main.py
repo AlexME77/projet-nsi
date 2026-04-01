@@ -3,15 +3,9 @@ from controle.navigation_robot import *
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-from gps.database import get_commande
 
 def main():
-    
-    action, nom_parcours = get_commande()
-    if action != "start":
-        print("Aucun parcours à lancer")
-        return
-    
+
     print("Initialisation du robot...")
     robot = Robot()
     robot.set_settings(100)
