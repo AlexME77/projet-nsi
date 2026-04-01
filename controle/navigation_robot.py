@@ -69,7 +69,7 @@ def navigation(robot, points):
         print("Calcul de l'orientation")
         orientation_voulue = gps.get_orientation(position, points[i])
         correction = orientation_voulue - orientation_robot
-        facteur_rotation = 0.01  # Ajuster ce facteur pour trouver le bon temps de rotation en fonction de l'orientation
+        facteur_rotation = 1.55/360
         if correction > 180:
             correction -= 360
         if correction < -180:
@@ -86,8 +86,8 @@ def navigation(robot, points):
             robot.rotation_horaire()
         time.sleep(abs(correction) * facteur_rotation)
 
-        orientation_robot = gps.get_orientation(position, points[i])
-
+        orientation_robot = (orientation_robot + correction) % 360
+        
         print("Vérification de la présence d'obstacles")
         distance_obstacle = robot.distance_obstacle()
         if distance_obstacle is not None and distance_obstacle < seuil_obstacle:
