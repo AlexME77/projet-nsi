@@ -34,7 +34,7 @@ def main():
         print("Récupération des coordonnées du parcours...")
         points_parcours = db.get_points_parcours()
         print("Démarrage de la navigation...")
-        nav.navigation(robot, points_parcours)
+        nav.navigation(points_parcours)
 
     except KeyboardInterrupt:
         print("Arrêt du programme par l'utilisateur")
