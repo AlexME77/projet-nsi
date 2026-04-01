@@ -112,14 +112,14 @@ class GPS:
         if position is None:
             return None
         print("Calcul de la distance du robot par rapport à la cible")
-        return self.distance_2pGPS(self.get_position_robot(), points[ordre])
+        return self.distance_2pGPS(position, points[ordre])
 
     def correction_orientation(self, points, ordre, orientation_robot):
         position = self.get_position_robot()
         if position is None:
             return None
         print("Calcule la correction d'orientation nécessaire pour se diriger vers la cible")
-        angle_destination = self.get_orientation(self.get_position_robot(), points[ordre])
+        angle_destination = self.get_orientation(position, points[ordre])
         correction = (angle_destination - orientation_robot)
 
         if correction > 180:
@@ -129,3 +129,5 @@ class GPS:
             correction += 360
 
         return correction
+    
+    
