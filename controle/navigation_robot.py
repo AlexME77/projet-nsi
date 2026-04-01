@@ -60,7 +60,11 @@ def navigation(robot, points):
             else:
                 print("Parcours terminé")
                 fin = True
-                return
+                conn = sqlite3.connect(DB_PATH)
+                cur = conn.cursor()
+                cur.execute("UPDATE commande SET action = "stop" WHERE id=1;")
+                conn.close()
+
 
         print("Calcul de l'orientation")
         orientation_voulue = gps.get_orientation(position, points[i])
@@ -81,10 +85,9 @@ def navigation(robot, points):
         else:
             robot.rotation_horaire()
         time.sleep(abs(correction) * facteur_rotation)
-        robot.arret()
 
         orientation_robot = (orientation_robot + correction) % 360
-
+        
         print("Vérification de la présence d'obstacles")
         distance_obstacle = robot.distance_obstacle()
         if distance_obstacle is not None and distance_obstacle < seuil_obstacle:
@@ -95,7 +98,9 @@ def navigation(robot, points):
             print("Avance vers la cible ")
             robot.avant()
         time.sleep(1)
+    return
 
 if __name__ == '__main__':
     robot = Robot()
     navigation(robot, [(12.0, 24.0)])
+
