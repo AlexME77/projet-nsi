@@ -10,7 +10,7 @@ class NavigationRobot:
         self.robot = robot
         self.gps = gps
         self.db = db
-        self.position_robot = None
+        self.position_robot = self.gps.get_position_robot()
         self.orientation_robot = self.gps.angle_depart(self.robot)
 
         if self.position_robot is None or self.orientation_robot is None:
@@ -110,6 +110,8 @@ class NavigationRobot:
         self.robot.avant()
         time.sleep(1)
 
+        self.robot.arret()
+
         print("Fin de l'évitement d'obstacle")
         
     def navigation(self, points):
@@ -124,15 +126,12 @@ class NavigationRobot:
                 self.robot.arret()
                 print("Arrêt du robot")
                 return
-
-            self.set_position_robot()
+            
             distance_arrivee = self.get_distance_arrivee(points[i])
 
             if distance_arrivee is None:
-                print("Erreur lors du calcul de la distance à la cible, arrêt.")
-                self.robot.arret()
-                print("Arrêt du robot")
-                return
+                print("Erreur lors du calcul de la distance à la cible, nouvelle tentative")
+                continue
 
             # ARRIVEE
             if self.est_arrive(points[i]):
@@ -154,14 +153,21 @@ class NavigationRobot:
             if correction is None:
                 self.robot.arret()
                 return
-            self.set_orientation_robot(correction)
+#            self.set_orientation_robot(correction)              A REVOIR si on ne prend pas en compte les imprécisions du GPS (voir calcul_orientation_deplacement)
 
             # OBSTACLE
             if self.obstacle_detecte():
                 self.eviter_obstacle(direction="droite" if correction > 0 else "gauche")
                 continue
-            else:
-                print("Avance vers la cible ")
-                self.robot.avant()
-            time.sleep(1)
 
+            position1 = self.position_robot
+            print("Avance vers la cible ")
+            self.robot.avant()
+            time.sleep(1)
+            self.robot.arret()
+            position2 = self.gps.get_position_robot()
+            if position2 is not None:
+                nouvelle_orientation = self.gps.calcul_orientation_deplacement(position1, position2)
+                if nouvelle_orientation is not None:
+                    self.orientation_robot = nouvelle_orientation
+                    self.position_robot = position2

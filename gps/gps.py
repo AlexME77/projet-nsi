@@ -130,4 +130,8 @@ class GPS:
 
         return correction
     
-    
+    def calcul_orientation_deplacement(self, pos1, pos2):
+        print("Calcule l'orientation de déplacement entre deux points")
+        if pos1 is None or pos2 is None:
+            return None
+        return self.get_orientation(pos1, pos2)
