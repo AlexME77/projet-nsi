@@ -1,26 +1,23 @@
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 import time
 from gps.gps import GPS
-from gps.database import coord_destination
-from robot import Robot
-from gps.database import stop_robot_bdd, stop_demande
-
+from gps.database import Database
 class NavigationRobot:
 
-    def __init__(self, robot, gps):
+    def __init__(self, robot, gps, db):
         self.robot = robot
         self.gps = gps
-        self.position_robot = self.gps.get_position_robot()
+        self.db = db
+        self.position_robot = None
         self.orientation_robot = self.gps.angle_depart(self.robot)
 
         if self.position_robot is None or self.orientation_robot is None:
             print("Calibration GPS impossible, arrêt.")
             self.robot.arret()
             print("Arrêt du robot")
-            exit()
+            raise RuntimeError("Calibration GPS impossible à l'initialisation")
     
     def est_arrive(self, destination, seuil_arrivee=2.0):
         print("Vérification de l'arrivée à la cible")
@@ -82,7 +79,7 @@ class NavigationRobot:
         print("Arrêt du robot")
         return correction
     
-    def set_orietation_robot(self, correction):
+    def set_orientation_robot(self, correction):
         if correction is None:
             return
         self.orientation_robot = (self.orientation_robot + correction) % 360
@@ -122,7 +119,7 @@ class NavigationRobot:
 
         while not fin:
             
-            if stop_demande():
+            if self.db.stop_demande():
                 print("Arrêt du robot demandé depuis le site")
                 self.robot.arret()
                 print("Arrêt du robot")
@@ -149,12 +146,15 @@ class NavigationRobot:
                 else:
                     print("Parcours terminé")
                     fin = True
-                    stop_robot_bdd()
+                    self.db.stop_robot_bdd()
                     return
 
             # ORIENTATION
             correction = self.correction_orientation(points[i])
-            self.set_orietation_robot(correction)
+            if correction is None:
+                self.robot.arret()
+                return
+            self.set_orientation_robot(correction)
 
             # OBSTACLE
             if self.obstacle_detecte():
@@ -164,10 +164,4 @@ class NavigationRobot:
                 print("Avance vers la cible ")
                 self.robot.avant()
             time.sleep(1)
-
-if __name__ == '__main__':
-    robot = Robot()
-    gps = GPS()
-    navigation = NavigationRobot(robot, gps)
-    navigation(robot, [(12.0, 24.0)])
 
