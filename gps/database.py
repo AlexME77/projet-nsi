@@ -1,12 +1,14 @@
 import sqlite3
 
+DB_PATH = "/var/www/html/robot/database/parcours.db"
+
 def coord_destination():
     """
     Récupère les coordonnées GPS (latitude, longitude)
     d'un point du parcours depuis la base de données
     """
     print("Connexion à la base de données")
-    conn = sqlite3.connect("/var/www/html/robot/database/parcours.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     print("Récupération du nom du parcours")
@@ -39,8 +41,6 @@ def coord_destination():
     print(f"Les points du parcours sont : {points}")
     return points
 
-DB_PATH = "/var/www/html/robot/database/parcours.db"
-
 def get_commande():
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
@@ -57,6 +57,11 @@ def stop_demande():
     action, _ = get_commande()
     return action == "stop"
 
+def stop_robot_bdd():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("UPDATE commande SET action = ? WHERE id=1", ("stop"))
+    conn.close()
 
 if __name__ == '__main__':
     coord_destination()

@@ -7,7 +7,7 @@ from gps.database import get_commande
 
 def main():
     
-    action, nom_parcours = get_commande()
+    action = get_commande()
     if action != "start":
         print("Aucun parcours à lancer")
         return
@@ -26,8 +26,6 @@ def main():
         print("Arrêt du programme par l'utilisateur")
     
     finally:
-        robot.arret()
-        print("Arrêt du robot")
         robot.cleanup()
         GPIO.cleanup()
         print("GPIO nettoyé")

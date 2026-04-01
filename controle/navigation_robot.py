@@ -6,13 +6,9 @@ import time
 from gps.gps import GPS
 from gps.database import coord_destination
 from robot import Robot
-from gps.database import stop_demande
+from gps.database import stop_robot_bdd, stop_demande
 
 def eviter_obstacle(robot, direction="droite"):
-    if stop_demande:
-        print("Arrêt du robot demandé depuis le site")
-        robot.arret()
-        break
     print("Début de l'évitement d'obstacle")
     
     robot.arret()
@@ -33,7 +29,6 @@ def eviter_obstacle(robot, direction="droite"):
     print("Fin de l'évitement d'obstacle")
 
 def navigation(robot, points):
-    
     gps = GPS()
 
     seuil_arrivee = 2.0
@@ -43,15 +38,17 @@ def navigation(robot, points):
     orientation_robot = gps.angle_depart(robot)
 
     while not fin:
-        if stop_demande:
+        if stop_demande():
             print("Arrêt du robot demandé depuis le site")
             robot.arret()
-            break
+            return
         position = gps.get_position_robot()
+        
         if position is None:
             print("Erreur GPS")
             robot.arret()
-            break
+            print("Arrêt du robot")
+            return
 
         print("Récupération de la distance à la cible")
         distance_arrivee = gps.distance_2pGPS(position, points[i])
@@ -68,10 +65,7 @@ def navigation(robot, points):
             else:
                 print("Parcours terminé")
                 fin = True
-                conn = sqlite3.connect(DB_PATH)
-                cur = conn.cursor()
-                cur.execute("UPDATE commande SET action = "stop" WHERE id=1;")
-                conn.close()
+                stop_robot_bdd()
 
 
         print("Calcul de l'orientation")
@@ -93,6 +87,7 @@ def navigation(robot, points):
         else:
             robot.rotation_horaire()
         time.sleep(abs(correction) * facteur_rotation)
+        robot.arret()
 
         orientation_robot = (orientation_robot + correction) % 360
         
@@ -106,7 +101,6 @@ def navigation(robot, points):
             print("Avance vers la cible ")
             robot.avant()
         time.sleep(1)
-    return
 
 if __name__ == '__main__':
     robot = Robot()
