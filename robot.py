@@ -51,5 +51,12 @@ class Robot:
 if __name__ == '__main__':
     test = Robot()
     test.set_settings(100)
+    test.avant()
+    time.sleep(2)
+    test.arriere()
+    time.sleep(2)
     test.rotation_horaire()
     time.sleep(2)
+    test.rotation_trigo()
+    time.sleep(2)
+    test.arret()
