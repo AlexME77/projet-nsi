@@ -22,6 +22,7 @@ class Database():
         parcours = cursor.fetchone()
     
         if parcours is None:
+            conn.close()
             raise ValueError("Aucune commande 'start' trouvée")
         
         nom_parcours = parcours[0]

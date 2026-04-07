@@ -65,8 +65,10 @@ class NavigationRobot:
     
     def correction_orientation(self, destination, seuil_correction=10, facteur_rotation=1.55/360):
         correction = self.get_correction_orientation(destination)
-        if correction is None or abs(correction) < seuil_correction:
-            return
+        if correction is None:
+            return None
+        if abs(correction) < seuil_correction:
+            return 0
         print("Correction d'orientation nécessaire :", correction)
         if correction > 0:
             print("Tourne à droite")

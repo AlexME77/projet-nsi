@@ -50,9 +50,3 @@ class Robot:
         self.motor.OUT_2.stop()
         self.motor.OUT_3.stop()
         self.motor.OUT_4.stop()
-
-if __name__ == '__main__':
-    test = Robot()
-    test.set_settings(100)
-    test.rotation_horaire()
-    time.sleep(2)
