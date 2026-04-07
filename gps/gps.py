@@ -29,7 +29,7 @@ class GPS:
         longitude = self.convertir_ddmm(champs[4], champs[5])
         return latitude, longitude
     
-    def get_position_robot(self, timeout = 5):
+    def get_position_robot(self, timeout = 10):
         """
         Lit les trames jusqu'à obtenir une position GPS valide (GPGGA)
         """
@@ -93,7 +93,7 @@ class GPS:
             return None
 
         robot.avant()
-        time.sleep(0.5)
+        time.sleep(3.0)
         robot.arret()
 
         position2 = self.get_position_robot()
