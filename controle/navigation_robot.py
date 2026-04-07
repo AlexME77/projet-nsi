@@ -129,6 +129,10 @@ class NavigationRobot:
                 print("Arrêt du robot")
                 return
             
+            self.set_orientation_robot(correction)  
+            if self.position_robot is None:
+                continue
+
             distance_arrivee = self.get_distance_arrivee(points[i])
 
             if distance_arrivee is None:
@@ -155,7 +159,6 @@ class NavigationRobot:
             if correction is None:
                 self.robot.arret()
                 return
-#            self.set_orientation_robot(correction)              A REVOIR si on ne prend pas en compte les imprécisions du GPS (voir calcul_orientation_deplacement)
 
             # OBSTACLE
             if self.obstacle_detecte():

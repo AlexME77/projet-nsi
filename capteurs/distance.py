@@ -48,7 +48,7 @@ class CapteurUltrason:
         return distance
  
 if __name__ == '__main__':
-    GPIO.setmode(GPIO.BCM)   # manquait aussi — nécessaire pour test standalone
+    GPIO.setmode(GPIO.BCM)
     capteur = CapteurUltrason()
     try:
         while True:
@@ -56,7 +56,7 @@ if __name__ == '__main__':
             if dist is None:
                 print("Erreur de mesure (timeout)")
             else:
-                print("Distance mesurée = %.1f cm" % dist)
+                print("Distance mesurée = ", dist)
             time.sleep(1)
  
         # On reset le programme via CTRL+C #

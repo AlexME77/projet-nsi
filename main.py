@@ -16,18 +16,18 @@ def main():
 
     db = Database()
 
+    commande = db.get_commande()
+    action = commande[0] if commande else None
+    if action != "start":
+        print("Aucun parcours à lancer")
+        return
+    
     try:
         nav = NavigationRobot(robot, gps, db)
     except RuntimeError as e:
         print(e)
         robot.cleanup()
         GPIO.cleanup()
-        return
-
-    commande = db.get_commande()
-    action = commande[0] if commande else None
-    if action != "start":
-        print("Aucun parcours à lancer")
         return
 
     try:
