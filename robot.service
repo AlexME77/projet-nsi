@@ -1,0 +1,16 @@
+[Unit]
+Description=Service robot NSI
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/Desktop/PROJET
+ExecStart=/usr/bin/python3 /home/pi/Desktop/PROJET/main.py
+Restart=always
+RestartSec=2
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
