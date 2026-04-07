@@ -1,5 +1,5 @@
 from robot import Robot
-from controle.navigation_robot import *
+from controle.navigation_robot import NavigationRobot
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -32,7 +32,7 @@ def main():
 
     try:
         print("Récupération des coordonnées du parcours...")
-        points_parcours = db.get_points_parcours()
+        points_parcours = db.coord_destination()
         print("Démarrage de la navigation...")
         nav.navigation(points_parcours)
 

@@ -2,7 +2,7 @@ import math
 import serial
 import serial.tools.list_ports
 import time
-from gps.database import coord_destination
+from gps.database import Database
 
 class GPS:
 
@@ -71,15 +71,14 @@ class GPS:
         while angle < 0:
             angle += 360
 
-        direction = 360 - (angle % 360)
+        direction = angle % 360
         return direction
     
     def port(self):
         print("Regarde si tu es sur le Raspberry et le port usb utilisé")
         ports = list(serial.tools.list_ports.comports())
         if not ports:
-            print("Aucun port série détecté")
-            exit()
+            raise RuntimeError("Aucun port série détecté — GPS introuvable")
         port = ports[0].device
         print("Port GPS détecté :", port)
         gps_serial = serial.Serial(port, 4800, timeout=1)
