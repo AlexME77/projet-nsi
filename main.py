@@ -11,45 +11,40 @@ def initialiser_systeme():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    print("Initialisation du robot...")
     robot = Robot()
     gps = GPS()
     db = Database()
     return robot, gps, db
 
 def main():
-    
+
     robot = None
 
     try:
         robot, gps, db = initialiser_systeme()
-        nav = NavigationRobot(robot, gps, db)
-        print("Service robot prêt. En attente de commande...")
         
         commande = db.get_commande()
         action = commande['action'] if commande else None
         if action != "start":
-            print("Aucun parcours à lancer")
+            print("Aucune commande de démarrage trouvée, fin du service robot.")
             return
-
-            while True:
-                nom_parcours = commande["nom_parcours"]
-                try:
-                    points_parcours = db.get_points_parcours(nom_parcours)
-                    print("Démarrage de la navigation...")
-                    nav.navigation(points_parcours)
-                    print("Navigation terminée.")
-                except Exception as e:
-                    print(f"Erreur pendant la navigation : {e}")
-                finally:
-                    db.set_commande("idle", None)
-                    print("Retour à l'état idle.")
-                    robot.arret()
-                    print("Robot arrêté.")
-                time.sleep(0.5)
+        
+        try:
+            nav = NavigationRobot(robot, gps, db)
+            nom_parcours = commande["nom_parcours"]
+            points_parcours = db.get_points_parcours(nom_parcours)
+            nav.navigation(points_parcours)
+            
+        except Exception as e:
+            print(f"Erreur pendant la navigation : {e}")
+        finally:
+            db.set_commande("idle", None)
+            print("Retour de la commande à l'état idle.")
+            robot.arret()
+        time.sleep(0.5)
 
     except KeyboardInterrupt:
-        print("Arrêt manuel du service robot.")
+        print("Arrêt manuel du service robot par l'utilisateur.")
 
     except Exception as e:
         print(f"Erreur fatale : {e}")
@@ -61,10 +56,8 @@ def main():
                 robot.cleanup()
             except Exception:
                 pass
-
         GPIO.cleanup()
         print("GPIO nettoyé.")
-
 
 if __name__ == "__main__":
     main()

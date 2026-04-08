@@ -1,13 +1,17 @@
 import sqlite3
 
 class Database:
+
     def __init__(self, database_path="/var/www/html/database/parcours.db"):
+        print("Initialisation de la base de données")
         self.path = database_path
 
     def _connect(self):
+        print("Connexion à la base de données")
         return sqlite3.connect(self.path, timeout=5)
 
     def get_commande(self):
+        print("Récupération de la commande en cours")
         conn = self._connect()
         cur = conn.cursor()
         cur.execute("SELECT action, nom_parcours FROM commande WHERE id = 1")
@@ -15,6 +19,7 @@ class Database:
         conn.close()
 
         if row is None:
+            print("Aucune commande trouvée")
             return None
 
         return {
@@ -23,6 +28,7 @@ class Database:
         }
 
     def set_commande(self, action, nom_parcours=None):
+        print(f"Changement de commande : action={action}, nom_parcours={nom_parcours}")
         conn = self._connect()
         cur = conn.cursor()
         cur.execute(
@@ -33,6 +39,7 @@ class Database:
         conn.close()
 
     def get_points_parcours(self, nom_parcours):
+        print(f"Récupération des points du parcours '{nom_parcours}'")
         if not nom_parcours:
             raise ValueError("Nom de parcours vide")
 
@@ -56,6 +63,7 @@ class Database:
         return points
 
     def stop_demande(self):
+        print("Vérification de la demande d'arrêt du robot")
         commande = self.get_commande()
         if commande is None:
             return False

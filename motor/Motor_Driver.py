@@ -6,10 +6,6 @@ import signal
 
 from motor.PiSoftPwm import *
 
-#print 'Go_1...'
-#frequency = 1.0 / self.sc_1.GetValue()
-#speed = self.sc_2.GetValue()
-
 class Motor():
     def __init__(self):
     # MC33932 pins
@@ -33,7 +29,7 @@ class Motor():
         self.OUT_3  = PiSoftPwm(0.1, 100, self._IN3, GPIO.BCM)
         self.OUT_4  = PiSoftPwm(0.1, 100, self._IN4, GPIO.BCM)
 
-        # Close pwm output
+    # Close pwm output
         self.OUT_1.start(0)
         self.OUT_2.start(0)
         self.OUT_3.start(0)
