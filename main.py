@@ -13,11 +13,11 @@ def initialiser_systeme():
 
     print("Initialisation du robot...")
     robot = Robot()
-    robot.set_settings(100)
-
     gps = GPS()
     db = Database()
+    return robot, gps, db, (robot, gps, db)
 
+def main():
     commande = db.get_commande()
     action = commande[0] if commande else None
     if action != "start":
@@ -25,52 +25,23 @@ def initialiser_systeme():
         return
     
     try:
-        nav = NavigationRobot(robot, gps, db)
-    except RuntimeError as e:
-        print(e)
-        robot.cleanup()
-        GPIO.cleanup()
-        return
-
-    try:
         robot, gps, db, nav = initialiser_systeme()
         print("Service robot prêt. En attente de commande...")
 
         while True:
-            commande = db.get_commande()
-
-            if commande is None:
-                print("Aucune commande trouvée dans la base.")
-                time.sleep(1)
-                continue
-
-            action = commande["action"]
             nom_parcours = commande["nom_parcours"]
-
-            if action == "start":
-                print(f"Commande START reçue pour le parcours : {nom_parcours}")
-
-                try:
-                    points_parcours = db.get_points_parcours(nom_parcours)
-                    print("Démarrage de la navigation...")
-                    nav.navigation(points_parcours)
-                    print("Navigation terminée.")
-                except Exception as e:
-                    print(f"Erreur pendant la navigation : {e}")
-                finally:
-                    db.set_commande("idle", None)
-                    print("Retour à l'état idle.")
-
-            elif action == "stop":
-                print("Commande STOP reçue.")
-                try:
-                    robot.arret()
-                except Exception as e:
-                    print(f"Erreur lors de l'arrêt du robot : {e}")
-                finally:
-                    db.set_commande("idle", None)
-                    print("Robot arrêté. Retour à l'état idle.")
-
+            try:
+                points_parcours = db.get_points_parcours(nom_parcours)
+                print("Démarrage de la navigation...")
+                nav.navigation(points_parcours)
+                print("Navigation terminée.")
+            except Exception as e:
+                print(f"Erreur pendant la navigation : {e}")
+            finally:
+                db.set_commande("idle", None)
+                print("Retour à l'état idle.")
+                robot.arret()
+                print("Robot arrêté.")
             time.sleep(0.5)
 
     except KeyboardInterrupt:
@@ -92,4 +63,4 @@ def initialiser_systeme():
 
 
 if __name__ == "__main__":
-    boucle_principale()
+    main()
