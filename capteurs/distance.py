@@ -7,15 +7,15 @@ import time
 GPIO.setwarnings(False) 
 GPIO.setmode(GPIO.BCM)
 
-TRIG = 23
-ECHO = 24
+TRIG = 3
+ECHO = 4
 
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
  
 class CapteurUltrason:
 
-    def __init__(self, TRIG, ECHO):
+    def __init__(self, TRIG=3, ECHO=4):
         self.trig = TRIG
         self.echo = ECHO
         GPIO.setup(self.trig, GPIO.OUT)
@@ -23,9 +23,11 @@ class CapteurUltrason:
  
     def mesurer_distance(self):
         GPIO.output(self.trig, True)
-    
         time.sleep(0.00001)
         GPIO.output(self.trig, False)
+
+        start = None
+        end = None
     
         timeout = time.time() + 0.02 
         while GPIO.input(self.echo) == 0:
@@ -39,6 +41,9 @@ class CapteurUltrason:
                 return None 
             end = time.time()
     
+        if start is None or end is None:
+            return None
+
         duree = end - start
         distance = (duree * 34300) / 2
     
