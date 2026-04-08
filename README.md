@@ -2,13 +2,11 @@
 
 ## Présentation
 
-Ce projet s'inscrit dans une démarche de conception d'un système embarqué combinant programmation, réseau et traitement de données.
-
 Ce projet a été réalisé dans le cadre de la spécialité **Numérique et Sciences Informatiques (NSI)** en Terminale.
 
 Il consiste à programmer un robot mobile capable de suivre un parcours défini par l'utilisateur via une interface web dynamique, en utilisant des coordonnées GPS.
 
-Le robot est accessible en Wi-Fi et peut être contrôlé à distance.
+Le robot est accessible en Wi-Fi et peut être contrôlé à distance via http://{ip du robot}
 
 ---
 
@@ -24,7 +22,7 @@ Le robot est accessible en Wi-Fi et peut être contrôlé à distance.
 
 ## Fonctionnement général
 
-Le projet repose sur trois parties principales :
+Le projet repose sur quatres parties principales :
 
 ### 1. Pilotage du robot (Élève 1 : MAI--EMERY Alexandre)
 
@@ -38,21 +36,15 @@ Le projet repose sur trois parties principales :
 * Calcul de la direction à suivre
 * Ajustement de l’orientation pour atteindre une destination
 
+### 3. Autonomie du robot et comportement (Élève 1 et 2)
+
+* Mise en commun entre robot et GPS
+
 ### 3. Interface Web (Élève 3 : ONNO Aymeric)
 
 * Création d’un site web accessible en Wi-Fi
 * Saisie d’un parcours par l’utilisateur
 * Stockage des données dans une base de données
-
----
-
-## Organisation du projet
-
-Le projet a été réalisé en groupe, avec une répartition des tâches :
-
-* Pilotage du robot et détection d'obstacles
-* Traitement des données GPS et calculs de navigation
-* Développement du site web et gestion des données
 
 ---
 
@@ -62,7 +54,7 @@ Le projet a été réalisé en groupe, avec une répartition des tâches :
 * HTML / CSS / PHP
 * Communication réseau (Wi-Fi)
 * Base de données (SQL)
-* Capteurs (ultrason, GPS)
+* Capteurs et robot (ultrason, GPS, moteurs robot)
 
 ---
 
@@ -80,10 +72,7 @@ Ce projet nous a permis de travailler sur :
 
 ## Améliorations possibles
 
-* Amélioration de la précision GPS
-* Optimisation des déplacements
-* Interface utilisateur plus avancée
-* Ajout de nouvelles fonctionnalités (suivi en temps réel, cartographie…)
+* A COMPLÉTER APRÈS AVOIR FINI
 
 ---
 
