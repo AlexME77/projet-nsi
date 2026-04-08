@@ -18,13 +18,19 @@ def initialiser_systeme():
     gps = GPS()
     db = Database()
 
-    nav = NavigationRobot(robot, gps, db)
-
-    return robot, gps, db, nav
-
-
-def boucle_principale():
-    robot = None
+    commande = db.get_commande()
+    action = commande[0] if commande else None
+    if action != "start":
+        print("Aucun parcours à lancer")
+        return
+    
+    try:
+        nav = NavigationRobot(robot, gps, db)
+    except RuntimeError as e:
+        print(e)
+        robot.cleanup()
+        GPIO.cleanup()
+        return
 
     try:
         robot, gps, db, nav = initialiser_systeme()
