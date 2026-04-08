@@ -15,34 +15,38 @@ def initialiser_systeme():
     robot = Robot()
     gps = GPS()
     db = Database()
-    return robot, gps, db, (robot, gps, db)
+    return robot, gps, db
 
 def main():
-    commande = db.get_commande()
-    action = commande[0] if commande else None
-    if action != "start":
-        print("Aucun parcours à lancer")
-        return
     
-    try:
-        robot, gps, db, nav = initialiser_systeme()
-        print("Service robot prêt. En attente de commande...")
+    robot = None
 
-        while True:
-            nom_parcours = commande["nom_parcours"]
-            try:
-                points_parcours = db.get_points_parcours(nom_parcours)
-                print("Démarrage de la navigation...")
-                nav.navigation(points_parcours)
-                print("Navigation terminée.")
-            except Exception as e:
-                print(f"Erreur pendant la navigation : {e}")
-            finally:
-                db.set_commande("idle", None)
-                print("Retour à l'état idle.")
-                robot.arret()
-                print("Robot arrêté.")
-            time.sleep(0.5)
+    try:
+        robot, gps, db = initialiser_systeme()
+        nav = NavigationRobot(robot, gps, db)
+        print("Service robot prêt. En attente de commande...")
+        
+        commande = db.get_commande()
+        action = commande['action'] if commande else None
+        if action != "start":
+            print("Aucun parcours à lancer")
+            return
+
+            while True:
+                nom_parcours = commande["nom_parcours"]
+                try:
+                    points_parcours = db.get_points_parcours(nom_parcours)
+                    print("Démarrage de la navigation...")
+                    nav.navigation(points_parcours)
+                    print("Navigation terminée.")
+                except Exception as e:
+                    print(f"Erreur pendant la navigation : {e}")
+                finally:
+                    db.set_commande("idle", None)
+                    print("Retour à l'état idle.")
+                    robot.arret()
+                    print("Robot arrêté.")
+                time.sleep(0.5)
 
     except KeyboardInterrupt:
         print("Arrêt manuel du service robot.")

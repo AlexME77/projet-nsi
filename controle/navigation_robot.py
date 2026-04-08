@@ -120,6 +120,7 @@ class NavigationRobot:
 
         i=0
         fin = False
+        correction = 0
 
         while not fin:
             
@@ -129,6 +130,7 @@ class NavigationRobot:
                 print("Arrêt du robot")
                 return
             
+            self.get_position_robot()
             self.set_orientation_robot(correction)  
             if self.position_robot is None:
                 continue
