@@ -20,7 +20,7 @@ Le robot est accessible en Wi-Fi et peut être contrôlé à distance via http:/
 
 ---
 
-## Fonctionnement général
+## Répartitions des tâches
 
 Le projet repose sur quatres parties principales :
 
@@ -85,6 +85,15 @@ Le code source et les fichiers du projet sont disponibles dans ce dépôt.
 ## Auteurs
 
 Projet réalisé en Terminale dans le cadre de la spécialité NSI :
-* MAI--EMERY Alexandre
-* MAI--EMERY Mickaël
-* ONNO Aymeric
+* MAI--EMERY Alexandre : intervient sur :
+  * tout le dossier capteurs
+  * tout le dossier controle
+  * tout le dossier motor
+  * robot.py
+  * main.py
+* MAI--EMERY Mickaël : intervient sur :
+  * tout le dossier gps
+  * tout le dossier controle
+  * main.py
+* ONNO Aymeric : intervient sur :
+  * tout le dossier du site
