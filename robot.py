@@ -5,6 +5,7 @@ from capteurs.distance import CapteurUltrason
 class Robot:
 
     def __init__(self, vitesse = 100):
+        self.motor = Motor()
         self.motor.Setting(0.01, vitesse)
         self.capteur_ultrason = CapteurUltrason()
 

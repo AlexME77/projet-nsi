@@ -1,7 +1,7 @@
 import sqlite3
 
 class Database:
-    def __init__(self, database_path="/var/www/html/copie_site/database/parcours.db"):
+    def __init__(self, database_path="/var/www/html/database/parcours.db"):
         self.path = database_path
 
     def _connect(self):
