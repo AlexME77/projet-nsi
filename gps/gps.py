@@ -2,12 +2,14 @@ import math
 import serial
 import serial.tools.list_ports
 import time
-from gps.database import Database
 
 class GPS:
 
     def __init__(self):
+        print("Initialisation du GPS")
         self.gps_serial = self.port()
+        if self.gps_serial is None:
+            raise RuntimeError("GPS non disponible")
 
     def convertir_ddmm(self, valeur, orientation):
         print("Conversion de la coordonnée")
@@ -30,34 +32,35 @@ class GPS:
         return latitude, longitude
     
     def get_position_robot(self, timeout = 10):
-        """
-        Lit les trames jusqu'à obtenir une position GPS valide (GPGGA)
-        """
+        print("Récupération de la position du robot")
         start_time = time.time()
 
         while time.time() - start_time < timeout:
             trame = self.gps_serial.readline().decode("ascii", errors="ignore").strip()
             if trame.startswith("$GPGGA"):
-                print("Trame brut : ", trame)
+                print("Trame GPGGA : ", trame)
                 position = self.extraire_position_GPGGA(trame)
                 if position:
                     return position
-        return None  # échec
+        print("Aucune trame GPGGA valide reçue dans le délai imparti, position GPS non disponible")
+        return None
 
     def distance_2pGPS(self, coord1, coord2):
-        print(f"Calcule 2pGPS entre {coord1} et {coord2}")
+        print(f"Calcule la distance 2pGPS entre {coord1} et {coord2}")
         la1 = math.radians(coord1[0])
         la2 = math.radians(coord2[0])
         lon1 = math.radians(coord1[1])
         lon2 = math.radians(coord2[1])
-        dis = 6371009 * math.acos(
-            math.sin(la1) * math.sin(la2) +
-            math.cos(la1) * math.cos(la2) * math.cos(lon1 - lon2)
+        valeur = (
+        math.sin(la1) * math.sin(la2) +
+        math.cos(la1) * math.cos(la2) * math.cos(lon1 - lon2)
         )
-        return dis  # en mètres
+        valeur = max(-1.0, min(1.0, valeur))
+        dis = 6371009 * math.acos(valeur)
+        return dis
 
     def get_orientation(self, coord1, coord2):
-        print("Calcule de l'orientation de l'arrivée par rapport au Nord")
+        print(f"Calcule l'orientation entre {coord1} et {coord2}")
         la1 = math.radians(coord1[0])
         la2 = math.radians(coord2[0])
         lon1 = math.radians(coord1[1])
@@ -75,21 +78,22 @@ class GPS:
         return direction
     
     def port(self):
-        print("Regarde si tu es sur le Raspberry et le port usb utilisé")
+        print("Recherche du port GPS")
         ports = list(serial.tools.list_ports.comports())
         if not ports:
-            raise RuntimeError("Aucun port série détecté — GPS introuvable")
+            print("Aucun GPS détecté")
+            return None
         port = ports[0].device
-        print("Port GPS détecté :", port)
+        print("Port GPS trouvé :", port)
         gps_serial = serial.Serial(port, 4800, timeout=1)
         return gps_serial
     
     def angle_depart(self, robot):
         "Calibration du robot pour avoir son orientation de départ par rapport au Nord"
-        print("Calibration orientation...")
+        print("Calibration de l'orientation de départ du robot")
         position1 = self.get_position_robot()
         if position1 is None:
-            print("Erreur GPS (position1)")
+            print("Erreur GPS à la calibration dans angle_depart(position1)")
             return None
 
         robot.avant()
@@ -98,37 +102,13 @@ class GPS:
 
         position2 = self.get_position_robot()
         if position2 is None:
-            print("Erreur GPS (position2)")
+            print("Erreur GPS à la calibration dans angle_depart(position2)")
             return None
 
         orientation_depart = self.get_orientation(position1, position2)
         print("Orientation de départ :", orientation_depart)
-
         return orientation_depart
-        
-    def get_distance_cible(self, points, ordre):
-        position = self.get_position_robot()
-        if position is None:
-            return None
-        print("Calcul de la distance du robot par rapport à la cible")
-        return self.distance_2pGPS(position, points[ordre])
 
-    def correction_orientation(self, points, ordre, orientation_robot):
-        position = self.get_position_robot()
-        if position is None:
-            return None
-        print("Calcule la correction d'orientation nécessaire pour se diriger vers la cible")
-        angle_destination = self.get_orientation(position, points[ordre])
-        correction = (angle_destination - orientation_robot)
-
-        if correction > 180:
-            correction -= 360
-
-        if correction < -180:
-            correction += 360
-
-        return correction
-    
     def calcul_orientation_deplacement(self, pos1, pos2):
         print("Calcule l'orientation de déplacement entre deux points")
         if pos1 is None or pos2 is None:
