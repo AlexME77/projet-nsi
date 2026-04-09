@@ -30,8 +30,6 @@ class NavigationRobot:
         if self.position_robot is None:
             return None
         angle_cible = self.gps.get_orientation(self.position_robot, destination)
-        if self.orientation_robot is None:
-            return None
         correction = (angle_cible - self.orientation_robot + 360) % 360
         if correction > 180:
             correction -= 360
@@ -56,9 +54,6 @@ class NavigationRobot:
     
     def set_orientation_robot(self, correction):
         print("Mise à jour de l'orientation du robot")
-        if correction is None:
-            print("Correction d'orientation invalide, orientation du robot non mise à jour")
-            return
         self.orientation_robot = (self.orientation_robot + correction) % 360
 
     def obstacle_detecte(self, seuil_obstacle=20):
@@ -110,12 +105,6 @@ class NavigationRobot:
             if self.position_robot is None:
                 print("Erreur GPS, nouvelle tentative de récupération de la position du robot")
                 continue
-            
-            # POINT DE DESTINATION
-            if i >= len(points) or not points[i]:
-                print("Point de destination non défini, arrêt.")
-                self.robot.arret()
-                return
 
             # ARRIVEE
             distance_arrivee = self.get_distance_arrivee(points[i])
@@ -147,9 +136,6 @@ class NavigationRobot:
 
             # DÉPLACEMENT
             position1 = self.position_robot
-            if position1 is None:
-                print("Erreur GPS, nouvelle tentative de récupération de la position du robot")
-                continue
             print("Rien d'anormal détecté, déplacement vers la cible")
             self.robot.avant()
             time.sleep(1)
@@ -158,14 +144,13 @@ class NavigationRobot:
             if position2 is None:
                 print("Erreur GPS, nouvelle tentative de récupération de la position du robot")
                 continue
+            nouvelle_orientation = self.gps.calcul_orientation_deplacement(position1, position2)
             if nouvelle_orientation is None:
                 print("Erreur GPS, nouvelle tentative de récupération de l'orientation du robot")
                 continue
 
-            nouvelle_orientation = self.gps.calcul_orientation_deplacement(position1, position2)
             self.orientation_robot = nouvelle_orientation
             self.position_robot = position2
 
-        self.db.set_commande("idle", None)
         print("Navigation terminée.")
         return

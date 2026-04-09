@@ -43,10 +43,6 @@ class Robot:
         print("Rotation trigonométrique (antihoraire)")
         self.motor.Back_1()
         self.motor.Go_2()
-        
-    def set_settings(self, vitesse):
-        print("Réglage de la vitesse du robot")
-        self.motor.Setting(0.01, vitesse)
 
     def distance_obstacle(self):
         print("Mesure de la distance à l'obstacle")

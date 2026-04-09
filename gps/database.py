@@ -7,11 +7,9 @@ class Database:
         self.path = database_path
 
     def _connect(self):
-        print("Connexion à la base de données")
         return sqlite3.connect(self.path, timeout=5)
 
     def get_commande(self):
-        print("Récupération de la commande en cours")
         conn = self._connect()
         cur = conn.cursor()
         cur.execute("SELECT action, nom_parcours FROM commande WHERE id = 1")
@@ -63,7 +61,6 @@ class Database:
         return points
 
     def stop_demande(self):
-        print("Vérification de la demande d'arrêt du robot")
         commande = self.get_commande()
         if commande is None:
             return False
