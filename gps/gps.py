@@ -100,7 +100,7 @@ class GPS:
     def angle_depart(self, robot):
         "Calibration du robot pour avoir son orientation de départ par rapport au Nord"
         print("Calibration de l'orientation de départ du robot")
-        position1 = self.attendre_position
+        position1 = self.attendre_position()
 
         robot.avant()
         time.sleep(3.0)

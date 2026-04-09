@@ -1,7 +1,6 @@
 
 import RPi.GPIO as GPIO
 import time
-GPIO.setwarnings(False)
 class CapteurUltrason:
 
     def __init__(self, TRIG=3, ECHO=4):
@@ -24,13 +23,13 @@ class CapteurUltrason:
         while GPIO.input(self.echo) == 0:
             if time.time() > timeout:
                 return None 
-            start = time.time()
+        start = time.time()
     
         timeout = time.time() + 0.02
         while GPIO.input(self.echo) == 1:
             if time.time() > timeout:
                 return None 
-            end = time.time()
+        end = time.time()
     
         if start is None or end is None:
             print("Erreur de mesure capteur ultrason : signal non reçu")

@@ -41,7 +41,6 @@ def main():
             db.set_commande("idle", None)
             print("Retour de la commande à l'état idle.")
             robot.arret()
-        time.sleep(0.5)
 
     except KeyboardInterrupt:
         print("Arrêt manuel du service robot par l'utilisateur.")
