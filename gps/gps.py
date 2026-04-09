@@ -87,23 +87,26 @@ class GPS:
         print("Port GPS trouvé :", port)
         gps_serial = serial.Serial(port, 4800, timeout=1)
         return gps_serial
-    
+
+    def attendre_position(self, message="Attente signal GPS..."):
+        print(message)
+        while True:
+            position = self.get_position_robot(timeout=10)
+            if position is not None:
+                return position
+            print("GPS indisponible, nouvelle tentative dans 3s...")
+            time.sleep(3)
+
     def angle_depart(self, robot):
         "Calibration du robot pour avoir son orientation de départ par rapport au Nord"
         print("Calibration de l'orientation de départ du robot")
-        position1 = self.get_position_robot()
-        if position1 is None:
-            print("Erreur GPS à la calibration dans angle_depart(position1)")
-            return None
+        position1 = self.attendre_position
 
         robot.avant()
         time.sleep(3.0)
         robot.arret()
 
-        position2 = self.get_position_robot()
-        if position2 is None:
-            print("Erreur GPS à la calibration dans angle_depart(position2)")
-            return None
+        position2 = self.attendre_position()
 
         orientation_depart = self.get_orientation(position1, position2)
         print("Orientation de départ :", orientation_depart)
@@ -111,6 +114,4 @@ class GPS:
 
     def calcul_orientation_deplacement(self, pos1, pos2):
         print("Calcule l'orientation de déplacement entre deux points")
-        if pos1 is None or pos2 is None:
-            return None
         return self.get_orientation(pos1, pos2)
