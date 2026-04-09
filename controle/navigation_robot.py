@@ -8,7 +8,7 @@ class NavigationRobot:
         self.position_robot = self.gps.get_position_robot()
         self.orientation_robot = self.gps.angle_depart(self.robot)
 
-        if self.position_robot is None or self.orientation_robot is None:
+        if self.position_robot is None:
             self.robot.arret()
             raise RuntimeError("Calibration GPS impossible à l'initialisation")
     
