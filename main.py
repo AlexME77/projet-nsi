@@ -33,14 +33,10 @@ def main():
             nav = NavigationRobot(robot, gps, db)
             nom_parcours = commande["nom_parcours"]
             points_parcours = db.get_points_parcours(nom_parcours)
-            if not points_parcours:
-                print(f"Aucun point trouvé pour le parcours '{nom_parcours}', fin du service robot.")
-                return
             nav.navigation(points_parcours)
             
         except Exception as e:
             print(f"Erreur pendant la navigation : {e}")
-            robot.arret()
         finally:
             db.set_commande("idle", None)
             print("Retour de la commande à l'état idle.")

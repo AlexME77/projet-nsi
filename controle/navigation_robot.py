@@ -128,7 +128,7 @@ class NavigationRobot:
 
             # OBSTACLE
             if self.obstacle_detecte():
-                self.eviter_obstacle(direction="droite" if correction > 0 else "gauche")
+                self.eviter_obstacle(direction="droite" if correction >= 0 else "gauche")
                 continue
 
             # DÉPLACEMENT
@@ -142,10 +142,6 @@ class NavigationRobot:
                 print("Erreur GPS, nouvelle tentative de récupération de la position du robot")
                 continue
             nouvelle_orientation = self.gps.calcul_orientation_deplacement(position1, position2)
-            if nouvelle_orientation is None:
-                print("Erreur GPS, nouvelle tentative de récupération de l'orientation du robot")
-                continue
-
             self.orientation_robot = nouvelle_orientation
             self.position_robot = position2
 
