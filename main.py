@@ -26,14 +26,12 @@ def main():
         commande = db.get_commande()
         action = commande['action'] if commande else None
         if action != "start":
-            print("Aucune commande de démarrage trouvée, fin du service robot.")
-            return
+            raise ValueError("Aucune commande de démarrage trouvée, fin du service robot.")
 
         try:
             nom_parcours = commande["nom_parcours"]
             if not nom_parcours:
-                print("Nom de parcours manquant, arrêt.")
-                return
+                raise ValueError("Nom de parcours manquant")
             nav = NavigationRobot(robot, gps, db)
             points_parcours = db.get_points_parcours(nom_parcours)
             nav.navigation(points_parcours)
