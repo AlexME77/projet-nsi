@@ -1,5 +1,4 @@
 from motor.Motor_Driver import Motor
-import time
 from capteurs.distance import CapteurUltrason
 
 class Robot:
