@@ -21,7 +21,7 @@ function e(string $value): string {
         <p>
             <?php
             if ($_GET['success'] === 'robot_start') echo 'Commande de démarrage envoyée au robot.';
-            elseif ($_GET['success'] === 'robot_stop') echo 'Commande d’arrêt envoyée au robot.';
+            elseif ($_GET['success'] === 'robot_stop') echo "Commande d’arrêt envoyée au robot.";
             ?>
         </p>
     <?php endif; ?>
@@ -33,8 +33,8 @@ function e(string $value): string {
             elseif ($_GET['error'] === 'nom_parcours_vide') echo 'Aucun parcours sélectionné.';
             elseif ($_GET['error'] === 'verification_parcours') echo 'Erreur lors de la vérification du parcours.';
             elseif ($_GET['error'] === 'parcours_introuvable') echo 'Le parcours sélectionné est introuvable.';
-            elseif ($_GET['error'] === 'commande_start') echo 'Erreur lors de l’envoi de la commande START.';
-            elseif ($_GET['error'] === 'commande_stop') echo 'Erreur lors de l’envoi de la commande STOP.';
+            elseif ($_GET['error'] === 'commande_start') echo "Erreur lors de l’envoi de la commande START.";
+            elseif ($_GET['error'] === 'commande_stop') echo "Erreur lors de l’envoi de la commande STOP.";
             else echo 'Une erreur est survenue.';
             ?>
         </p>
