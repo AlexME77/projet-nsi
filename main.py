@@ -30,8 +30,11 @@ def main():
             return
 
         try:
-            nav = NavigationRobot(robot, gps, db)
             nom_parcours = commande["nom_parcours"]
+            if not nom_parcours:
+                print("Nom de parcours manquant, arrêt.")
+                return
+            nav = NavigationRobot(robot, gps, db)
             points_parcours = db.get_points_parcours(nom_parcours)
             nav.navigation(points_parcours)
             
