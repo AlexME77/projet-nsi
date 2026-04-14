@@ -38,11 +38,9 @@ if (isset($_POST['nom_parcours'])) {
         exit();
     }
 
+    // On lance le script Python
+    // Le "> /dev/null 2>&1 &" permet de lancer en arrière-plan pour ne pas bloquer le site web
+    exec("python3 ~/Desktop/PROJET/main.py > /dev/null 2>&1 &");
+
     header('Location: index.php?success=robot_start');
     exit();
-
-} else {
-    header('Location: index.php?error=method_not_allowed');
-    exit();
-}
-?>
