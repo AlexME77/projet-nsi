@@ -45,7 +45,7 @@ if (isset($_POST['nom_parcours'])) {
 
     // On lance le script Python
     // Le "> /dev/null 2>&1 &" permet de lancer en arrière-plan pour ne pas bloquer le site web
-    exec("python3 ~/Desktop/PROJET/main.py > /dev/null 2>&1 &");
+    exec("sudo -u pi /usr/bin/python3 /home/pi/Desktop/PROJET/main.py >> /tmp/robot.log 2>&1 &");
 
     header('Location: index.php?success=robot_start');
     exit();

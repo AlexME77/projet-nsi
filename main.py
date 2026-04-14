@@ -25,7 +25,8 @@ def main():
         commande = db.get_commande()
         action = commande['action'] if commande else None
         if action != "start":
-            raise ValueError("Aucune commande de démarrage trouvée, fin du service robot.")
+            print("Aucune commande de démarrage trouvée, fin du service robot.")
+            return
 
         try:
             nom_parcours = commande["nom_parcours"]
