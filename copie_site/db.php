@@ -1,6 +1,10 @@
 <?php
 // On crée la Base de donné
-$dbPath = 'parcours.db';
+$dbPath = '/var/www/html/database/parcours.db';
+$dbDir  = dirname($dbPath);
+if (!is_dir($dbDir)) {
+    mkdir($dbDir, 0775, true);
+}
 $db = new SQLite3($dbPath);
 
 /*

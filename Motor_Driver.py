@@ -4,7 +4,7 @@ GPIO.setwarnings(False)
 import time
 import signal   
 
-from motor.PiSoftPwm import *
+from PiSoftPwm import *
 
 class Motor():
     def __init__(self):
