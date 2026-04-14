@@ -62,7 +62,7 @@ if __name__ == "__main__":
     robot = Robot()
     try:
         robot.rotation_horaire()
-        time.sleep(2)
+        time.sleep(2.25)
         robot.arret()
     except KeyboardInterrupt:
         print("Arrêt manuel du robot par l'utilisateur.")

@@ -28,7 +28,7 @@ class NavigationRobot:
             correction -= 360
         return correction
     
-    def correction_orientation(self, destination, seuil_correction=10, facteur_rotation=1.55/360):
+    def correction_orientation(self, destination, seuil_correction=10, facteur_rotation=2.25/360):
         correction = self.get_correction_orientation(destination)
         if correction is None:
             print("Erreur de calcul de la correction d'orientation")
