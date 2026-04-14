@@ -3,7 +3,7 @@ from capteurs.distance import CapteurUltrason
 
 class Robot:
 
-    def __init__(self, vitesse = 100):
+    def __init__(self, vitesse = 75):
         print("Initialisation du robot")
         self.motor = Motor()
         self.motor.Setting(0.01, vitesse)
@@ -56,3 +56,15 @@ class Robot:
         self.motor.OUT_2.stop()
         self.motor.OUT_3.stop()
         self.motor.OUT_4.stop()
+
+if __name__ == "__main__":
+    import time
+    robot = Robot()
+    try:
+        robot.rotation_horaire()
+        time.sleep(2)
+        robot.arret()
+    except KeyboardInterrupt:
+        print("Arrêt manuel du robot par l'utilisateur.")
+    finally:
+        robot.cleanup()
