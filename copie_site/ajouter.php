@@ -8,32 +8,25 @@ if (isset($_GET["nom_parcours"])) {
     $parcours_selectionne = $_GET["nom_parcours"];
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["nom_parcours"])) {
     $nom_parcours = $_POST["nom_parcours"];
     $ordre = $_POST["ordre"];
     $latitude = $_POST["latitude"];
     $longitude = $_POST["longitude"];
 
-    $stmt = $db->prepare("INSERT INTO points (nom_parcours, ordre, latitude, longitude) VALUES (:nom_parcours, :ordre, :latitude, :longitude)");
-    $stmt->bindValue(":nom_parcours", $nom_parcours, SQLITE3_TEXT);
-    $stmt->bindValue(":ordre", $ordre, SQLITE3_INTEGER);
-    $stmt->bindValue(":latitude", $latitude, SQLITE3_FLOAT);
-    $stmt->bindValue(":longitude", $longitude, SQLITE3_FLOAT);
-
-    $resultat = $stmt->execute();
+    $requete = "INSERT INTO points (nom_parcours, ordre, latitude, longitude) VALUES ('$nom_parcours', $ordre, $latitude, $longitude)";
+    $resultat = $db->exec($requete);
 
     if ($resultat) {
         $message = "Point ajouté.";
         $parcours_selectionne = $nom_parcours;
     } else {
-        $message = "Erreur lors de l'ajout : " . $db->lastErrorMsg();
+        $message = "Erreur lors de l'ajout.";
     }
 }
 
 if ($parcours_selectionne != "") {
-    $stmt_points = $db->prepare("SELECT id, nom_parcours, ordre, latitude, longitude FROM points WHERE nom_parcours = :nom_parcours ORDER BY ordre");
-    $stmt_points->bindValue(":nom_parcours", $parcours_selectionne, SQLITE3_TEXT);
-    $points = $stmt_points->execute();
+    $points = $db->query("SELECT id, nom_parcours, ordre, latitude, longitude FROM points WHERE nom_parcours = '$parcours_selectionne' ORDER BY ordre");
 } else {
     $points = $db->query("SELECT id, nom_parcours, ordre, latitude, longitude FROM points ORDER BY nom_parcours, ordre");
 }
@@ -57,7 +50,7 @@ if ($parcours_selectionne != "") {
             <option value="">-- Tous les parcours --</option>
             <?php
             $parcours = $db->query("SELECT DISTINCT nom_parcours FROM points ORDER BY nom_parcours");
-            while ($ligne = $parcours->fetchArray(SQLITE3_ASSOC)) {
+            while ($ligne = $parcours->fetchArray()) {
                 echo "<option value=\"" . $ligne["nom_parcours"] . "\"";
                 if ($ligne["nom_parcours"] == $parcours_selectionne) {
                     echo " selected";
@@ -72,16 +65,16 @@ if ($parcours_selectionne != "") {
     <br>
 
     <label>Points enregistrés :</label>
-    <select>
+    <ul>
         <?php
-        while ($point = $points->fetchArray(SQLITE3_ASSOC)) {
-            echo "<option>";
+        while ($point = $points->fetchArray()) {
+            echo "<li>";
             echo $point["nom_parcours"] . " - point " . $point["ordre"];
             echo " (" . $point["latitude"] . ", " . $point["longitude"] . ")";
-            echo "</option>";
+            echo "</li>";
         }
         ?>
-    </select>
+    </ul>
 
     <br><br>
 

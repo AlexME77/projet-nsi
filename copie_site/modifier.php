@@ -11,49 +11,38 @@ if (isset($_GET["nom_parcours"])) {
 
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
-    $stmt = $db->prepare("SELECT * FROM points WHERE id = :id");
-    $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
-    $resultat = $stmt->execute();
-    $point_selectionne = $resultat->fetchArray(SQLITE3_ASSOC);
-
-    if ($point_selectionne) {
-        $parcours_selectionne = $point_selectionne["nom_parcours"];
+    $resultat = $db->query("SELECT * FROM points WHERE id = $id");
+    
+    if ($resultat) {
+        $point_selectionne = $resultat->fetchArray();
+        if ($point_selectionne) {
+            $parcours_selectionne = $point_selectionne["nom_parcours"];
+        }
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["id"])) {
     $id = $_POST["id"];
     $nom_parcours = $_POST["nom_parcours"];
     $ordre = $_POST["ordre"];
     $latitude = $_POST["latitude"];
     $longitude = $_POST["longitude"];
 
-    $stmt = $db->prepare("
-        UPDATE points
-        SET nom_parcours = :nom_parcours, ordre = :ordre, latitude = :latitude, longitude = :longitude
-        WHERE id = :id
-    ");
-    $stmt->bindValue(":nom_parcours", $nom_parcours, SQLITE3_TEXT);
-    $stmt->bindValue(":ordre", $ordre, SQLITE3_INTEGER);
-    $stmt->bindValue(":latitude", $latitude, SQLITE3_FLOAT);
-    $stmt->bindValue(":longitude", $longitude, SQLITE3_FLOAT);
-    $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
-
-    $resultat = $stmt->execute();
+    $requete = "UPDATE points SET nom_parcours = '$nom_parcours', ordre = $ordre, latitude = $latitude, longitude = $longitude WHERE id = $id";
+    $resultat = $db->exec($requete);
 
     if ($resultat) {
         $message = "Point modifié.";
     } else {
-        $message = "Erreur lors de la modification : " . $db->lastErrorMsg();
+        $message = "Erreur lors de la modification.";
     }
 
-    $stmt2 = $db->prepare("SELECT * FROM points WHERE id = :id");
-    $stmt2->bindValue(":id", $id, SQLITE3_INTEGER);
-    $res2 = $stmt2->execute();
-    $point_selectionne = $res2->fetchArray(SQLITE3_ASSOC);
-
-    if ($point_selectionne) {
-        $parcours_selectionne = $point_selectionne["nom_parcours"];
+    $res2 = $db->query("SELECT * FROM points WHERE id = $id");
+    if ($res2) {
+        $point_selectionne = $res2->fetchArray();
+        if ($point_selectionne) {
+            $parcours_selectionne = $point_selectionne["nom_parcours"];
+        }
     }
 }
 ?>
@@ -76,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <option value="">-- Choisir un parcours --</option>
             <?php
             $parcours = $db->query("SELECT DISTINCT nom_parcours FROM points ORDER BY nom_parcours");
-            while ($ligne = $parcours->fetchArray(SQLITE3_ASSOC)) {
+            while ($ligne = $parcours->fetchArray()) {
                 echo "<option value=\"" . $ligne["nom_parcours"] . "\"";
                 if ($ligne["nom_parcours"] == $parcours_selectionne) {
                     echo " selected";
@@ -99,11 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label>Choisir un point :</label>
             <select name="id" required>
                 <?php
-                $stmt_points = $db->prepare("SELECT id, ordre FROM points WHERE nom_parcours = :nom_parcours ORDER BY ordre");
-                $stmt_points->bindValue(":nom_parcours", $parcours_selectionne, SQLITE3_TEXT);
-                $points = $stmt_points->execute();
+                $points = $db->query("SELECT id, ordre FROM points WHERE nom_parcours = '$parcours_selectionne' ORDER BY ordre");
 
-                while ($point = $points->fetchArray(SQLITE3_ASSOC)) {
+                while ($point = $points->fetchArray()) {
                     echo "<option value=\"" . $point["id"] . "\">Point " . $point["ordre"] . "</option>";
                 }
                 ?>

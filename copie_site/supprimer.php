@@ -5,21 +5,20 @@ $message = "";
 $parcours_selectionne = "";
 
 if (isset($_GET["nom_parcours"])) {
-$parcours_selectionne = $_GET["nom_parcours"];
+    $parcours_selectionne = $_GET["nom_parcours"];
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$id = $_POST["id"];
+if (isset($_POST["id"])) {
+    $id = $_POST["id"];
 
-$stmt = $db->prepare("DELETE FROM points WHERE id = :id");
-$stmt->bindValue(":id", $id, SQLITE3_INTEGER);
-$resultat = $stmt->execute();
+    $requete = "DELETE FROM points WHERE id = $id";
+    $resultat = $db->exec($requete);
 
-if ($resultat) {
-$message = "Point supprimé";
-} else {
-$message = "Erreur lors de la suppression";
-}
+    if ($resultat) {
+        $message = "Point supprimé";
+    } else {
+        $message = "Erreur lors de la suppression";
+    }
 }
 ?>
 
@@ -43,16 +42,17 @@ $message = "Erreur lors de la suppression";
 <option value="">-- Choisir un parcours --</option>
 
 <?php
+
 $parcours = $db->query("SELECT DISTINCT nom_parcours FROM points ORDER BY nom_parcours");
 
-while ($ligne = $parcours->fetchArray(SQLITE3_ASSOC)) {
-echo "<option value=\"" . $ligne["nom_parcours"] . "\"";
+while ($ligne = $parcours->fetchArray()) {
+    echo "<option value=\"" . $ligne["nom_parcours"] . "\"";
 
-if ($ligne["nom_parcours"] == $parcours_selectionne) {
-echo " selected";
-}
+    if ($ligne["nom_parcours"] == $parcours_selectionne) {
+        echo " selected";
+    }
 
-echo ">" . $ligne["nom_parcours"] . "</option>";
+    echo ">" . $ligne["nom_parcours"] . "</option>";
 }
 ?>
 </select>
@@ -69,14 +69,13 @@ if ($parcours_selectionne != "") {
 <label>Choisir un point :</label>
 <select name="id" required>
 <?php
-$stmt_points = $db->prepare("SELECT id, ordre, latitude, longitude FROM points WHERE nom_parcours = :nom_parcours ORDER BY ordre");
-$stmt_points->bindValue(":nom_parcours", $parcours_selectionne, SQLITE3_TEXT);
-$points = $stmt_points->execute();
 
-while ($point = $points->fetchArray(SQLITE3_ASSOC)) {
-echo "<option value=\"" . $point["id"] . "\">";
-echo "Point " . $point["ordre"] . " (" . $point["latitude"] . ", " . $point["longitude"] . ")";
-echo "</option>";
+$points = $db->query("SELECT id, ordre, latitude, longitude FROM points WHERE nom_parcours = '$parcours_selectionne' ORDER BY ordre");
+
+while ($point = $points->fetchArray()) {
+    echo "<option value=\"" . $point["id"] . "\">";
+    echo "Point " . $point["ordre"] . " (" . $point["latitude"] . ", " . $point["longitude"] . ")";
+    echo "</option>";
 }
 ?>
 </select>
