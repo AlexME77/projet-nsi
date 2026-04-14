@@ -56,15 +56,3 @@ class Robot:
         self.motor.OUT_2.stop()
         self.motor.OUT_3.stop()
         self.motor.OUT_4.stop()
-
-if __name__ == "__main__":
-    import time
-    robot = Robot()
-    try:
-        robot.rotation_horaire()
-        time.sleep(2.25)
-        robot.arret()
-    except KeyboardInterrupt:
-        print("Arrêt manuel du robot par l'utilisateur.")
-    finally:
-        robot.cleanup()
