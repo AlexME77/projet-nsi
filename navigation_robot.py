@@ -122,13 +122,14 @@ class NavigationRobot:
                 continue
             self.set_orientation_robot(correction)
 
+            position1 = self.position_robot
+
             # OBSTACLE
             if self.obstacle_detecte():
                 self.eviter_obstacle(direction="droite" if correction >= 0 else "gauche")
                 continue
 
             # DÉPLACEMENT
-            position1 = self.position_robot
             print("Rien d'anormal détecté, déplacement vers la cible")
             self.robot.avant()
             time.sleep(1)
