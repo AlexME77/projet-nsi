@@ -15,15 +15,12 @@ if ($nomParcours === '') {
     exit();
 }
 
-/*
-Vérifier que le parcours existe vraiment dans la table points
-*/
+// Vérifier que le parcours existe dans la base
 $stmtCheck = $db->prepare("
     SELECT COUNT(*) AS total
     FROM points
     WHERE nom_parcours = :nom
 ");
-
 $stmtCheck->bindValue(':nom', $nomParcours, SQLITE3_TEXT);
 $resultCheck = $stmtCheck->execute();
 
@@ -40,23 +37,35 @@ if ((int)($row['total'] ?? 0) === 0) {
     exit();
 }
 
-/*
-Enregistrer la commande de démarrage
-*/
-$stmtUpdate = $db->prepare("
-    UPDATE commande
-    SET action = :action, nom_parcours = :nom
-    WHERE id = 1
-");
+// Mettre à jour la commande dans la base
+try {
+    $db->exec("BEGIN");
+    $stmtUpdate = $db->prepare("
+        UPDATE commande
+        SET action = :action, nom_parcours = :nom
+        WHERE id = 1
+    ");
+    $stmtUpdate->bindValue(':action', 'start', SQLITE3_TEXT);
+    $stmtUpdate->bindValue(':nom', $nomParcours, SQLITE3_TEXT);
+    $stmtUpdate->execute();
 
-$stmtUpdate->bindValue(':action', 'start', SQLITE3_TEXT);
-$stmtUpdate->bindValue(':nom', $nomParcours, SQLITE3_TEXT);
-
-$resultUpdate = $stmtUpdate->execute();
-
-if ($resultUpdate === false) {
+    // Vérifier que la ligne a bien été modifiée
+    if ($db->changes() === 0) {
+        $db->exec("ROLLBACK");
+        header('Location: index.php?error=commande_start');
+        exit();
+    }
+    $db->exec("COMMIT");
+} catch (Exception $e) {
+    $db->exec("ROLLBACK");
     header('Location: index.php?error=commande_start');
     exit();
+}
+
+// Lancer le programme Python si pas déjà en cours
+exec("pgrep -f 'main.py' > /dev/null 2>&1", $out, $running);
+if ($running !== 0) {
+    exec("sudo python3 /home/pi/Desktop/PROJET/main.py >> /tmp/robot.log 2>&1 &");
 }
 
 header('Location: index.php?success=robot_start');
