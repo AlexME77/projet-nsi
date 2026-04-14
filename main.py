@@ -1,9 +1,9 @@
 import RPi.GPIO as GPIO
 
 from robot import Robot
-from controle.navigation_robot import NavigationRobot
-from gps.gps import GPS
-from gps.database import Database
+from navigation_robot import NavigationRobot
+from gps import GPS
+from database import Database
 
 
 def initialiser_systeme():

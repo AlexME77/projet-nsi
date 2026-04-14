@@ -1,5 +1,5 @@
-from motor.Motor_Driver import Motor
-from capteurs.distance import CapteurUltrason
+from Motor_Driver import Motor
+from capteur_ultrason import CapteurUltrason
 
 class Robot:
 

@@ -1,5 +1,4 @@
 import sqlite3
-
 class Database:
 
     def __init__(self, database_path="/var/www/html/database/parcours.db"):

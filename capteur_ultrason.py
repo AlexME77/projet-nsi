@@ -1,6 +1,7 @@
 
 import RPi.GPIO as GPIO
 import time
+
 class CapteurUltrason:
 
     def __init__(self, TRIG=3, ECHO=4):
