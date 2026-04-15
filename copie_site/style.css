@@ -1,22 +1,30 @@
+/*
+ * Fichier : style.css
+ * Rôle : Définit l'apparence visuelle (mise en page, couleurs, typographie) 
+ * de l'interface web de contrôle du robot.
+ */
+
+/* Style général du corps de la page */
 body {
-    font-family: "Comic Sans MS", Arial, sans-serif;
+    font-family: "Comic Sans MS", Arial, sans-serif; /* Choix de la police de caractères */
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #74ebd5, #9face6);
-    min-height: 100vh;
+    background: linear-gradient(135deg, #74ebd5, #9face6); /* Application d'un dégradé de couleur en arrière-plan */
+    min-height: 100vh; /* Assure que le fond couvre au minimum toute la hauteur de l'écran */
 }
 
+/* Conteneur principal regroupant tous les éléments de la page */
 .container {
     width: 700px;
-    margin: 60px auto;
+    margin: 60px auto; /* Centre le conteneur horizontalement avec une marge supérieure et inférieure */
     background-color: white;
-    padding: 30px;
-    border-radius: 20px;
-    border: 4px solid #333;
-    box-shadow: 8px 8px 0px #333;
+    padding: 30px; /* Espace intérieur entre le bord et le contenu */
+    border-radius: 20px; /* Arrondi des angles */
+    border: 4px solid #333; /* Bordure épaisse de couleur sombre */
+    box-shadow: 8px 8px 0px #333; /* Ombre portée franche pour créer un effet de relief */
 }
 
-
+/* Titre principal de la page */
 h1 {
     text-align: center;
     color: #333;
@@ -24,34 +32,39 @@ h1 {
     margin-bottom: 25px;
 }
 
+/* Liens hypertextes (utilisés pour les retours au menu) */
 a {
     color: #ff6600;
-    text-decoration: none;
+    text-decoration: none; /* Supprime le soulignement par défaut des liens */
     font-weight: bold;
 }
 
+/* État du lien lors du survol par le curseur */
 a:hover {
     text-decoration: none;
 }
 
+/* Étiquettes descriptives des champs de formulaire */
 label {
     font-weight: bold;
     color: #444;
 }
 
+/* Champs de saisie textuelle, numérique et listes déroulantes */
 input[type="text"],
 input[type="number"],
 select {
-    width: 100%;
+    width: 100%; /* Occupe toute la largeur du conteneur parent */
     padding: 10px;
     margin-top: 6px;
     margin-bottom: 18px;
     border-radius: 12px;
     border: 3px solid #333;
     font-size: 15px;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Permet d'inclure les marges intérieures et les bordures dans le calcul de la largeur totale */
 }
 
+/* Boutons de soumission des formulaires (style par défaut) */
 input[type="submit"] {
     background-color: #ffcc00;
     color: #333;
@@ -59,22 +72,23 @@ input[type="submit"] {
     border-radius: 25px;
     border: 3px solid #333;
     font-weight: bold;
-    cursor: pointer;
+    cursor: pointer; /* Modifie le curseur pour indiquer un élément cliquable */
     box-shadow: 4px 4px 0px #333;
-    transition: 0.1s;
+    transition: 0.1s; /* Rend l'animation de survol et de clic plus fluide */
 }
 
+/* Changement de couleur au survol du bouton */
 input[type="submit"]:hover {
     background-color: #ffd633;
 }
 
+/* Animation lors du clic sur le bouton (simulation d'enfoncement) */
 input[type="submit"]:active {
-    box-shadow: 2px 2px 0px #333;
-    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #333; /* Réduction de l'ombre */
+    transform: translate(2px, 2px); /* Décalage de l'élément vers le bas et la droite */
 }
 
-
-
+/* Classe utilisée pour les messages d'information, de succès ou d'erreur */
 .note {
     font-size: 0.9em;
     color: #555;
@@ -84,47 +98,42 @@ input[type="submit"]:active {
 
 /* ===== BOUTONS LANCER / STOP ===== */
 
-
-.robot-buttons
-input[type="submit"].start {
+/* Bouton spécifique pour le démarrage (couleur verte) */
+.robot-buttons input[type="submit"].start {
     background-color: #4cd137;
     color: #333;
 }
 
-.robot-buttons
-input[type="submit"].start:hover {
+.robot-buttons input[type="submit"].start:hover {
     background-color: #44bd32;
 }
 
-.robot-buttons
-input[type="submit"].danger {
+/* Bouton spécifique pour l'arrêt (couleur rouge) */
+.robot-buttons input[type="submit"].danger {
     background-color: #e55039;
     color: #333;
 }
 
-
-.robot-buttons
-input[type="submit"].danger:hover {
+.robot-buttons input[type="submit"].danger:hover {
     background-color: #ff6b6b;
 }
 
-
-
-
-
+/* Conteneur gérant l'alignement des boutons Lancer et Arrêter */
 .robot-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    display: flex; /* Utilisation du modèle de boîte flexible (Flexbox) */
+    justify-content: space-between; /* Répartition équitable de l'espace entre les éléments */
+    gap: 20px; /* Espace imposé entre les boutons */
     margin-top: 10px;
     margin-bottom: 30px;
 }
 
+/* Adaptation des formulaires inclus dans la zone des boutons du robot */
 .robot-buttons form {
-    width: 48%;
+    width: 48%; /* Permet d'afficher les deux boutons côte à côte */
     margin: 0;
 }
 
+/* Dimensionnement spécifique des boutons dans cette zone */
 .robot-buttons input[type="submit"] {
     width: 100%;
     font-size: 17px;
@@ -133,14 +142,16 @@ input[type="submit"].danger:hover {
 
 /* ===== BOUTONS DU MENU ===== */
 
+/* Conteneur des boutons de navigation (Ajouter, Modifier, Supprimer) */
 .menu-buttons {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: wrap; /* Autorise le passage à la ligne si la largeur est insuffisante */
+    justify-content: center; /* Centre les éléments sur la ligne */
     gap: 20px;
     margin-top: 10px;
 }
 
+/* Style de base d'un bouton de navigation du menu */
 .menu-btn {
     width: 42%;
     box-sizing: border-box;
@@ -156,23 +167,30 @@ input[type="submit"].danger:hover {
     transition: 0.15s;
 }
 
+/* Effet d'élévation au survol */
 .menu-btn:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px); /* Déplace le bouton vers le haut */
 }
 
+/* Effet d'enfoncement au clic */
 .menu-btn:active {
     transform: translate(3px, 3px);
     box-shadow: 3px 3px 0px #333;
 }
 
+/* Attribution de couleurs distinctes selon la position du bouton dans le code HTML */
+
+/* Premier bouton (Ajouter) : Jaune */
 .menu-buttons a:nth-child(1) {
     background-color: #ffcc00;
 }
 
+/* Deuxième bouton (Modifier) : Bleu */
 .menu-buttons a:nth-child(2) {
     background-color: #66ccff;
 }
 
+/* Troisième bouton (Supprimer) : Rouge et ajustement de la largeur pour le centrage */
 .menu-buttons a:nth-child(3) {
     background-color: #ff6b6b;
     width: 50%;

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Fichier : index.php
+ * Rôle : C'est la page d'accueil (le menu principal) du site web.
+ * Elle permet de choisir un parcours dans la liste, de démarrer ou d'arrêter le robot,
+ * et d'afficher les messages de réussite ou d'erreur en haut de la page.
+ */
+
+// On charge la connexion à la base de données pour pouvoir lire les parcours existants
 include("db.php");
 ?>
 <!DOCTYPE html>
@@ -13,7 +21,14 @@ include("db.php");
 <div class="container">
     <h1>Menu principal</h1>
 
-    <?php if (isset($_GET['success'])): ?>
+    <?php 
+    /**
+     * GESTION DES MESSAGES DE SUCCÈS
+     * On regarde si l'URL contient une variable "?success=..." (grâce à $_GET)
+     * Si oui, on affiche le bon message en fonction du mot-clé reçu.
+     */
+    if (isset($_GET['success'])): 
+    ?>
         <p>
             <?php
             if ($_GET['success'] == 'robot_start') echo 'Commande de démarrage envoyée au robot.';
@@ -22,7 +37,14 @@ include("db.php");
         </p>
     <?php endif; ?>
 
-    <?php if (isset($_GET['error'])): ?>
+    <?php 
+    /**
+     * GESTION DES MESSAGES D'ERREUR
+     * Même principe, on vérifie si "?error=..." est dans l'URL pour avertir l'utilisateur 
+     * si un truc s'est mal passé dans lancer.php ou stop.php.
+     */
+    if (isset($_GET['error'])): 
+    ?>
         <p>
             <?php
             if ($_GET['error'] == 'method_not_allowed') echo 'Méthode non autorisée.';
@@ -40,7 +62,16 @@ include("db.php");
         <label for="nom_parcours">Choisir un parcours :</label>
         <select name="nom_parcours" id="nom_parcours" required>
             <?php
+            /**
+             * RÉCUPÉRATION DES PARCOURS
+             * On fait une requête SQL pour trouver tous les noms de parcours.
+             * Le mot-clé DISTINCT permet de ne pas afficher le même parcours en boucle 
+             * s'il contient plusieurs points.
+             */
             $parcours = $db->query("SELECT DISTINCT nom_parcours FROM points ORDER BY nom_parcours");
+            
+            // Boucle while pour lire chaque ligne trouvée dans la base de données
+            // et créer dynamiquement une balise <option> dans le menu HTML.
             while ($ligne = $parcours->fetchArray()) {
                 $nom = $ligne['nom_parcours'];
                 echo '<option value="' . $nom . '">' . $nom . '</option>';
