@@ -81,7 +81,8 @@ class NavigationRobot:
 
     def obstacle_detecte(self, seuil_obstacle=20):
         '''
-        
+        Détecte la présence d'obstacles devant le robot en utilisant la fonction distance_obstacle du robot
+        Si la distance à l'obstacle est inférieure au seuil d'obstacle (en centimètres, en paramètre), la fonction retourne True pour indiquer qu'un obstacle est détecté, sinon elle retourne False
         '''
         print("Vérification de la présence d'obstacles")
         distance_obstacle = self.robot.distance_obstacle()
@@ -187,7 +188,7 @@ class NavigationRobot:
                 continue
 
             # Mise à jour de l'orientation et de la position du robot après le déplacement
-            nouvelle_orientation = self.gps.calcul_orientation_deplacement(position1, position2)
+            nouvelle_orientation = self.gps.get_orientation(position1, position2)
             self.orientation_robot = nouvelle_orientation
             self.position_robot = position2
 

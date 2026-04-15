@@ -172,10 +172,3 @@ class GPS:
         orientation_depart = self.get_orientation(position1, position2)
         print("Orientation de départ :", orientation_depart)
         return orientation_depart
-
-    def calcul_orientation_deplacement(self, pos1, pos2):
-        """
-        Calcule l'angle de déplacement entre deux points.
-        """
-        print("Calcule l'orientation de déplacement entre deux points")
-        return self.get_orientation(pos1, pos2)
