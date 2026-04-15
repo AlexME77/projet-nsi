@@ -1,3 +1,5 @@
+# Réalisé par : Fichier fourni par le professeur ou le site du RaspberryPi, peut-être légèrement modifier par Alexandre Mai--Emery pour des tests
+
 # The original is aboudou ,the Source code is here : https://goddess-gate.com/dc2/index.php/pages/raspiledmeter.en
 # The modifier is ukonline2000
 

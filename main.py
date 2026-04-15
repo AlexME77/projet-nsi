@@ -1,3 +1,4 @@
+# Réalisé par : Alexandre Mai--Emery, Mickaël Mai--Emery
 import RPi.GPIO as GPIO
 
 from robot import Robot
@@ -7,6 +8,12 @@ from database import Database
 
 
 def initialiser_systeme():
+    '''
+    Initialise le système en configurant les GPIO, en créant les instances de Robot, GPS et Database
+    Retourne les instances créées
+
+    Réalisé par : Alexandre Mai--Emery
+    '''
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
@@ -17,17 +24,20 @@ def initialiser_systeme():
 
 def main():
 
+    # Alexandre : Initialisation du système
     robot = None
 
     try:
         robot, gps, db = initialiser_systeme()
 
+        # Mickaël : Récupération de la commande dans la base de données
         commande = db.get_commande()
         action = commande['action'] if commande else None
         if action != "start":
             print("Aucune commande de démarrage trouvée, fin du service robot.")
             return
 
+        # Alexandre et Mickaël : Navigation vers les points du parcours
         try:
             nom_parcours = commande["nom_parcours"]
             if not nom_parcours:
