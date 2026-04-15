@@ -4,24 +4,48 @@ import serial.tools.list_ports
 import time
 
 class GPS:
-
+    """
+    Gère la communication avec le module GPS et effectue
+    les calculs de distance et d'orientation.
+    """
     def __init__(self):
+        """
+        Initialise le module GPS en recherchant automatiquement le port série disponible.
+        
+        raise RuntimeError : Si aucun module GPS n'est détecté.
+        """
         print("Initialisation du GPS")
         self.gps_serial = self.port()
         if self.gps_serial is None:
             raise RuntimeError("GPS non disponible")
 
     def convertir_ddmm(self, valeur, orientation):
+        """
+        Convertit les coordonnées du format NMEA (DDMM.MMMM) en degrés décimaux.
+        
+        Exemple: 4850.5000 N -> 48.841666
+        paramètre valeur : Chaîne de caractères de la coordonnée brute.
+        paramètre orientation : 'N', 'S', 'E' ou 'W'.
+        return : Float représentant la coordonnée en degrés décimaux.
+        """
         print("Conversion de la coordonnée")
         valeur = float(valeur)
         degres = int(valeur // 100)
         minutes = valeur - degres * 100
         coord = degres + minutes / 60
+        
+        # Inversion pour le Sud ou l'Ouest
         if orientation in ['S', 'W']:
             coord = -coord
         return coord
 
     def extraire_position_GPGGA(self, trame):
+        """
+        Analyse une trame NMEA de type $GPGGA pour extraire la position.
+        
+        paramètre trame : La ligne de texte brute lue sur le port série.
+        return : Tuple (latitude, longitude) ou None si le signal est invalide.
+        """
         print("Extraction de la position")
         champs = trame.split(",")
         # Signal invalide
@@ -32,6 +56,12 @@ class GPS:
         return latitude, longitude
     
     def get_position_robot(self, timeout = 10):
+        """
+        Lit les données série jusqu'à trouver une trame GPGGA valide.
+        
+        paramètre timeout : Temps maximum d'attente en secondes.
+        return : Tuple (lat, lon) ou None si expiration du délai.
+        """
         print("Récupération de la position du robot")
         start_time = time.time()
 
@@ -46,6 +76,13 @@ class GPS:
         return None
 
     def distance_2pGPS(self, coord1, coord2):
+        """
+        Calcule la distance en mètres entre deux points GPS.
+        
+        paramètre coord1 : Tuple (lat, lon) du point A.
+        paramètre coord2 : Tuple (lat, lon) du point B.
+        return : Distance en mètres.
+        """
         print(f"Calcule la distance 2pGPS entre {coord1} et {coord2}")
         la1 = math.radians(coord1[0])
         la2 = math.radians(coord2[0])
@@ -60,6 +97,13 @@ class GPS:
         return dis
 
     def get_orientation(self, coord1, coord2):
+        """
+        Calcule l'angle par rapport au Nord pour aller du point 1 au point 2.
+        
+        paramètre coord1 : Tuple (lat, lon) de départ.
+        paramètre coord2 : Tuple (lat, lon) d'arrivée.
+        return : Angle en degrés entre 0 et 360 (0 = Nord).
+        """
         print(f"Calcule l'orientation entre {coord1} et {coord2}")
         la1 = math.radians(coord1[0])
         la2 = math.radians(coord2[0])
@@ -78,6 +122,11 @@ class GPS:
         return direction
     
     def port(self):
+        """
+        Détecte automatiquement le port série utilisé par le module GPS.
+        
+        return : Objet serial.Serial configuré, ou None si aucun port trouvé.
+        """
         print("Recherche du port GPS")
         ports = list(serial.tools.list_ports.comports())
         if not ports:
@@ -89,6 +138,12 @@ class GPS:
         return gps_serial
 
     def attendre_position(self, message="Attente signal GPS..."):
+        """
+        Attend que le GPS renvoie une position valide et envoie un message pendant ce temps.
+        
+        paramètre message: Message à afficher pendant l'attente.
+        return : Tuple (latitude, longitude).
+        """
         print(message)
         while True:
             position = self.get_position_robot(timeout=10)
@@ -98,7 +153,13 @@ class GPS:
             time.sleep(3)
 
     def angle_depart(self, robot):
-        "Calibration du robot pour avoir son orientation de départ par rapport au Nord"
+        """
+        Calcule l'orientation initiale du robot par rapport au nord.
+        Le robot avance pendant 3 secondes pour comparer deux positions successives.
+        
+        paramètre robot : Instance de l'objet Robot.
+        return : Orientation de départ par rapport au nord en degrés.
+        """
         print("Calibration de l'orientation de départ du robot")
         position1 = self.attendre_position()
 
@@ -113,5 +174,8 @@ class GPS:
         return orientation_depart
 
     def calcul_orientation_deplacement(self, pos1, pos2):
+        """
+        Calcule l'angle de déplacement entre deux points.
+        """
         print("Calcule l'orientation de déplacement entre deux points")
         return self.get_orientation(pos1, pos2)
