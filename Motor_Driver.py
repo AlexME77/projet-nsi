@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# Réalisé par : Fichier fourni par le professeur ou le site du RaspberryPi, peut-être légèrement modifier par Alexandre Mai--Emery pour des tests
+
 import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
 import time

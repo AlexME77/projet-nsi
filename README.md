@@ -70,15 +70,28 @@ Ce projet nous a permis de travailler sur :
 
 ---
 
+## Problèmes encore présents
+
+* Lancement du fichier main.py impossible à partir du site (utilisation de ssh pour se connecter au robot puis utiliser sudo python3 ~/Desktop/PROJET/main.py)
+* Comportement du robot aléatoire (raison : précision du gps trop faible : à chaque déplacement le robot ne voit pas le déplacement et va donc dans tous les sens)
+* Évitement d'obstacle qui s'active de façon spontané alors qu'il n'y a pas d'obstacle parfois (imprécisions du capteur ultrason)
+
+
+---
+
 ## Améliorations possibles
 
-* A COMPLÉTER APRÈS AVOIR FINI
+* Trouver des solutions pour que le site soit 100% fonctionnel avec le bouton "Lancer"
+* Améliorer le site en lui apportant d'autres fonctionnalités (lecture de la console directement sur le site, meilleur esthétique...)
+* Selon nous, avec le matériel mis à notre disposition, le projet est impossible à fonctionner selon les critère données:
+  * Le GPS est imprécis et ne permet pas de diriger un robot sur des petits déplacements
+  * Le capteur ultrason reste quelque chose de peu fiable et qui s'active sans notre demande
 
 ---
 
 ## Accès au projet
 
-Le code source et les fichiers du projet sont disponibles dans ce dépôt.
+Le code source et les fichiers du projet sont disponibles dans ce dépôt https://github.com/AlexME77:projet-nsi ainsi que dans le dossier du projet dans le dépose travail.
 
 ---
 
@@ -86,14 +99,17 @@ Le code source et les fichiers du projet sont disponibles dans ce dépôt.
 
 Projet réalisé en Terminale dans le cadre de la spécialité NSI :
 * MAI--EMERY Alexandre : intervient sur :
-  * tout le dossier capteurs
-  * tout le dossier controle
-  * tout le dossier motor
+  * capteur_ultrason.py
   * robot.py
+  * navigation_robot.py
   * main.py
+* Ressources utilisé par MAI--EMERY Alexandre :
+  * Motor_Driver.py
+  * PiSoftPwm.py
 * MAI--EMERY Mickaël : intervient sur :
-  * tout le dossier gps
-  * tout le dossier controle
+  * database.py
+  * gps.py
   * main.py
 * ONNO Aymeric : intervient sur :
-  * tout le dossier du site
+  * Tous les fichiers php du site
+  * La base de donnée parcours.db
