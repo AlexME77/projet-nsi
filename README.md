@@ -91,7 +91,7 @@ Ce projet nous a permis de travailler sur :
 
 ## Accès au projet
 
-Le code source et les fichiers du projet sont disponibles dans ce dépôt https://github.com/AlexME77:projet-nsi ainsi que dans le dossier du projet dans le dépose travail.
+Le code source et les fichiers du projet sont disponibles dans ce dépôt https://github.com/AlexME77/projet-nsi ainsi que dans le dossier du projet dans le dépose travail.
 
 ---
 
