@@ -104,6 +104,7 @@ class NavigationRobot:
         # Recul du robot
         self.robot.arriere()
         time.sleep(1)
+        self.robot.arret()
 
         # Rotation du robot dans la direction spécifiée
         if direction == "droite":
@@ -111,10 +112,12 @@ class NavigationRobot:
         else:
             self.robot.rotation_trigo()
         time.sleep(1)
+        self.robot.arret()
 
         # Robot avance
         self.robot.avant()
         time.sleep(1)
+        self.robot.arret()
 
         # Rotation du robot dans la direction inverse pour retrouver son axe
         self.robot.rotation_trigo() if direction == "droite" else self.robot.rotation_horaire()
