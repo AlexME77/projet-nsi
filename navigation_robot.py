@@ -80,14 +80,18 @@ class NavigationRobot:
 
     def obstacle_detecte(self, seuil_obstacle=20):
         '''
-        Détecte la présence d'obstacles devant le robot en utilisant la fonction distance_obstacle du robot
+        Détecte la présence d'obstacles devant le robot en utilisant la fonction distance_obstacle du robot. Faite 2 fois pour éviter les fausses informations et un évitement inutile.
         Si la distance à l'obstacle est inférieure au seuil d'obstacle (en centimètres, en paramètre), la fonction retourne True pour indiquer qu'un obstacle est détecté, sinon elle retourne False
         '''
         print("Vérification de la présence d'obstacles")
-        distance_obstacle = self.robot.distance_obstacle()
-        if distance_obstacle is not None and distance_obstacle < seuil_obstacle:
-            print("Obstacle détecté")
-            return True
+        dist1 = self.robot.distance_obstacle()
+        if dist1 is not None and dist1 < seuil_obstacle:
+            time.sleep(0.05) # Petite pause
+            # Seconde mesure pour confirmer
+            dist2 = self.robot.distance_obstacle()
+            if dist2 is not None and dist2 < seuil_obstacle:
+                print("Obstacle confirmé")
+                return True
         print("Aucun obstacle détecté")
         return False
 
