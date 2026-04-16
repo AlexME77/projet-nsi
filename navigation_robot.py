@@ -6,8 +6,7 @@ class NavigationRobot:
         self.robot = robot
         self.gps = gps
         self.db = db
-        self.orientation_robot = self.gps.angle_depart(self.robot)
-        self.position_robot = self.gps.attendre_position()
+        self.orientation_robot, self.position_robot = self.gps.angle_depart(self.robot)
         
     def set_position_robot(self):
         '''
