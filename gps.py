@@ -171,4 +171,4 @@ class GPS:
 
         orientation_depart = self.get_orientation(position1, position2)
         print("Orientation de départ :", orientation_depart)
-        return orientation_depart
+        return orientation_depart, position2
