@@ -63,8 +63,11 @@ class GPS:
         return : Tuple (lat, lon) ou None si expiration du délai.
         """
         print("Récupération de la position du robot")
-        start_time = time.time()
 
+        # Nettoie le buffer pour éviter de traiter des données obsolètes (trames précédentes, donc mauvaise position)
+        self.gps_serial.reset_input_buffer()
+
+        start_time = time.time()
         while time.time() - start_time < timeout:
             trame = self.gps_serial.readline().decode("ascii", errors="ignore").strip()
             if trame.startswith("$GPGGA"):
